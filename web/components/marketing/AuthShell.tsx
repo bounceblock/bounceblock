@@ -3,7 +3,7 @@ const BULLETS = ["100 free verifications", "Email + phone in one pass", "No cred
 /** Split-screen wrapper for auth pages: brand panel + form. */
 export function AuthShell({ children }: { children: React.ReactNode }) {
   return (
-    <div className="grid min-h-[calc(100vh-66px)] md:grid-cols-2">
+    <div className="grid min-h-screen md:grid-cols-2">
       <aside className="relative hidden flex-col justify-between overflow-hidden bg-gradient-to-br from-[#1E7E3A] via-[#15857F] to-[#1B5FA8] p-12 text-white md:flex">
         <div className="pointer-events-none absolute -right-20 -top-20 h-72 w-72 rounded-full bg-white/10 blur-2xl" />
         <span className="relative font-serif text-[22px] font-semibold">BounceBlock.io</span>

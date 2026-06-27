@@ -4,6 +4,7 @@ import { config } from "@/lib/config";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { Button } from "@/components/ui/Button";
 import { BillingPortalButton } from "@/components/billing/BillingPortalButton";
+import { AppShell } from "@/components/app/AppShell";
 import { logout } from "../actions";
 
 export const metadata: Metadata = { title: "Settings" };
@@ -20,7 +21,8 @@ export default async function SettingsPage() {
   const planLabel = plan.charAt(0).toUpperCase() + plan.slice(1);
 
   return (
-    <div className="mx-auto max-w-2xl px-6 py-12">
+    <AppShell active="settings">
+      <div className="mx-auto max-w-2xl">
       <h1 className="font-serif text-3xl">Settings</h1>
       <p className="mt-1 text-[15px] text-ink-2">Manage your account and billing.</p>
 
@@ -52,7 +54,8 @@ export default async function SettingsPage() {
           Demo settings — connect Supabase to manage real account data.
         </p>
       )}
-    </div>
+      </div>
+    </AppShell>
   );
 }
 
