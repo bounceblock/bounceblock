@@ -17,6 +17,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
               <>
                 <Link href="/dashboard" className="text-ink-2 transition-colors hover:text-ink">Dashboard</Link>
                 <Link href="/verify" className="text-ink-2 transition-colors hover:text-ink">Verify</Link>
+                <Link href="/settings" className="text-ink-2 transition-colors hover:text-ink">Settings</Link>
                 <form action={logout}>
                   <button className="text-ink-2 transition-colors hover:text-ink">Log out</button>
                 </form>

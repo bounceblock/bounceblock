@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Container } from "@/components/ui/Container";
 import { Logo } from "@/components/brand/Logo";
+import { NewsletterForm } from "@/components/marketing/NewsletterForm";
 import { FOOTER, SITE } from "@/lib/constants";
 
 /** Marketing site footer with sitemap, status and compliance pills. */
@@ -28,6 +29,10 @@ export function SiteFooter() {
                 </span>
               ))}
             </div>
+            <p className="mb-2 mt-6 text-[12.5px] font-semibold uppercase tracking-wide text-ink-3">
+              Deliverability tips, monthly
+            </p>
+            <NewsletterForm />
           </div>
           {Object.entries(FOOTER).map(([group, links]) => (
             <div key={group}>
