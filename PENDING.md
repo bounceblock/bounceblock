@@ -27,7 +27,7 @@
 ### Backend / processing pipeline
 - [x] Persist `uploads` + `verifications` rows after full processing ✅
 - [x] Store clean file in Supabase Storage + email signed download link ✅
-- [ ] Wire dashboard/history **Download** buttons to signed URLs
+- [x] Wire dashboard/history **Download** buttons to signed URLs ✅
 - [x] Enforce monthly **quota** (402 + upgrade prompt when over) ✅
 - [x] **results-ready** email after processing + **receipt** email from webhook ✅
 - [ ] Move large-list processing to a **queue worker** (Inngest/QStash adapter)
@@ -37,7 +37,7 @@
 - [x] API key generation + management UI (settings) ✅
 
 ### Auth completeness
-- [ ] Forgot / reset password flow
+- [x] Forgot / reset password flow ✅
 - [ ] Email-verification resend + confirmation handling
 - [ ] Post-signup onboarding step
 

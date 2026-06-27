@@ -76,11 +76,53 @@ export async function getAdminKpis(): Promise<{ kpis: AdminKpis; demo: boolean }
   return { kpis: { totalUsers, paidUsers, mrr, signups7d, verifications, byPlan: { free, starter, pro, business } }, demo: false };
 }
 
-export async function getAdminUsers(): Promise<{ users: AdminUser[]; demo: boolean }> {
-  if (!config.hasSupabaseAdmin()) return { users: DEMO_USERS, demo: true };
+export async function getAdminUsers(q?: string): Promise<{ users: AdminUser[]; demo: boolean }> {
+  if (!config.hasSupabaseAdmin()) {
+    const users = q ? DEMO_USERS.filter((u) => u.email.includes(q.toLowerCase())) : DEMO_USERS;
+    return { users, demo: true };
+  }
   const db = createSupabaseAdminClient();
-  const { data } = await db.from("profiles").select("id, email, plan, created_at").order("created_at", { ascending: false }).limit(100);
+  let query = db.from("profiles").select("id, email, plan, created_at").order("created_at", { ascending: false }).limit(100);
+  if (q) query = query.ilike("email", `%${q}%`);
+  const { data } = await query;
   return { users: (data as AdminUser[] | null) ?? [], demo: false };
+}
+
+export interface AdminUserDetail extends AdminUser {
+  referral_code?: string | null;
+  usage?: { used: number; quota: number } | null;
+  verifications: AdminVer[];
+}
+
+export async function getAdminUser(id: string): Promise<{ user: AdminUserDetail | null; demo: boolean }> {
+  if (!config.hasSupabaseAdmin()) {
+    const base = DEMO_USERS.find((u) => u.id === id) ?? DEMO_USERS[0];
+    return {
+      user: { ...base, id, referral_code: "a1b2c3d4", usage: { used: 1840, quota: 5000 }, verifications: DEMO_VERS },
+      demo: true,
+    };
+  }
+  const db = createSupabaseAdminClient();
+  const { data: p } = await db.from("profiles").select("id, email, plan, created_at, referral_code").eq("id", id).single();
+  if (!p) return { user: null, demo: false };
+  const { data: usageRows } = await db
+    .from("usage").select("verifications_used, plan_quota").eq("user_id", id)
+    .order("period_start", { ascending: false }).limit(1);
+  const { data: vers } = await db
+    .from("verifications").select("id, user_id, kind, rows_processed, quality_score, created_at")
+    .eq("user_id", id).order("created_at", { ascending: false }).limit(20);
+  return {
+    user: {
+      id: p.id,
+      email: p.email,
+      plan: p.plan,
+      created_at: p.created_at,
+      referral_code: p.referral_code,
+      usage: usageRows?.[0] ? { used: usageRows[0].verifications_used ?? 0, quota: usageRows[0].plan_quota ?? 0 } : null,
+      verifications: (vers as AdminVer[] | null) ?? [],
+    },
+    demo: false,
+  };
 }
 
 export async function getAdminVerifications(): Promise<{ vers: AdminVer[]; demo: boolean }> {
