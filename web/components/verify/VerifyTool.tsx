@@ -131,6 +131,11 @@ export function VerifyTool() {
         return;
       }
       const data = await res.json();
+      if (res.status === 402) {
+        setFullStatus("idle");
+        setError("You've used your monthly allowance. Upgrade your plan for more verifications.");
+        return;
+      }
       if (!res.ok) throw new Error(data.error ?? "Processing failed.");
       downloadCsv(data.cleanCsv, "bounceblock_clean.csv");
       setCleanReady(data.cleanRows ?? 0);

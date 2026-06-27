@@ -32,8 +32,8 @@
 - [ ] Move large-list processing to a **queue worker** (Inngest/QStash adapter)
 
 ### Public API
-- [ ] `POST /api/v1/verify` endpoint with API-key auth
-- [ ] API key generation + management UI (settings)
+- [x] `POST /api/v1/verify` endpoint with API-key auth ✅
+- [x] API key generation + management UI (settings) ✅
 
 ### Auth completeness
 - [ ] Forgot / reset password flow
@@ -47,12 +47,12 @@
 - [ ] Search + filter + pagination on lists
 
 ### App polish
-- [ ] Loading skeletons for app + admin
+- [x] Loading skeletons for app + admin ✅
 - [ ] Team members management (Business plan)
 - [ ] `app.bounceblock.io` subdomain routing (middleware host rewrite)
 
 ### Quality
-- [ ] More tests (plans, rate-limit, scoring, content builders)
+- [x] More tests (plans, rate-limit) ✅ — 11 tests; add scoring/content-builder tests next
 - [ ] Per-page OG images (optional)
 
 ---

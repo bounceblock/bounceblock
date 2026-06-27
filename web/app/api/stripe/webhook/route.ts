@@ -5,6 +5,7 @@ import { getStripe } from "@/lib/stripe";
 import { config } from "@/lib/config";
 import { createSupabaseAdminClient } from "@/lib/supabase/admin";
 import { planForPriceId } from "@/lib/plans";
+import { sendReceiptEmail } from "@/lib/email";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -116,4 +117,16 @@ async function recordPayment(db: SupabaseClient, inv: Stripe.Invoice) {
     currency: inv.currency,
     status: inv.status ?? "paid",
   });
+
+  if (userId) {
+    const { data: profile } = await db.from("profiles").select("email, plan").eq("id", userId).single();
+    if (profile?.email) {
+      const planLabel = profile.plan ? profile.plan.charAt(0).toUpperCase() + profile.plan.slice(1) : "your plan";
+      try {
+        await sendReceiptEmail(profile.email, planLabel, inv.amount_paid);
+      } catch {
+        // non-blocking
+      }
+    }
+  }
 }
