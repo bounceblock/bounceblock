@@ -125,6 +125,51 @@ export async function getAdminUser(id: string): Promise<{ user: AdminUserDetail 
   };
 }
 
+export interface AdminPayment {
+  id: string;
+  user_id: string | null;
+  amount: number;
+  currency: string;
+  status: string;
+  created_at: string;
+}
+
+export interface AdminSub {
+  id: string;
+  user_id: string;
+  plan: string;
+  status: string;
+  current_period_end: string | null;
+}
+
+const DEMO_PAYMENTS: AdminPayment[] = [
+  { id: "p1", user_id: "1", amount: 2900, currency: "usd", status: "paid", created_at: "2026-06-26" },
+  { id: "p2", user_id: "3", amount: 7900, currency: "usd", status: "paid", created_at: "2026-06-25" },
+  { id: "p3", user_id: "2", amount: 1900, currency: "usd", status: "paid", created_at: "2026-06-24" },
+  { id: "p4", user_id: "4", amount: 2900, currency: "usd", status: "paid", created_at: "2026-06-22" },
+];
+
+const DEMO_SUBS: AdminSub[] = [
+  { id: "s1", user_id: "1", plan: "pro", status: "active", current_period_end: "2026-07-26" },
+  { id: "s2", user_id: "3", plan: "business", status: "active", current_period_end: "2026-07-25" },
+  { id: "s3", user_id: "2", plan: "starter", status: "active", current_period_end: "2026-07-24" },
+  { id: "s4", user_id: "4", plan: "pro", status: "past_due", current_period_end: "2026-07-22" },
+];
+
+export async function getAdminPayments(): Promise<{ payments: AdminPayment[]; demo: boolean }> {
+  if (!config.hasSupabaseAdmin()) return { payments: DEMO_PAYMENTS, demo: true };
+  const db = createSupabaseAdminClient();
+  const { data } = await db.from("payments").select("id, user_id, amount, currency, status, created_at").order("created_at", { ascending: false }).limit(100);
+  return { payments: (data as AdminPayment[] | null) ?? [], demo: false };
+}
+
+export async function getAdminSubscriptions(): Promise<{ subs: AdminSub[]; demo: boolean }> {
+  if (!config.hasSupabaseAdmin()) return { subs: DEMO_SUBS, demo: true };
+  const db = createSupabaseAdminClient();
+  const { data } = await db.from("subscriptions").select("id, user_id, plan, status, current_period_end").order("created_at", { ascending: false }).limit(100);
+  return { subs: (data as AdminSub[] | null) ?? [], demo: false };
+}
+
 export async function getAdminVerifications(): Promise<{ vers: AdminVer[]; demo: boolean }> {
   if (!config.hasSupabaseAdmin()) return { vers: DEMO_VERS, demo: true };
   const db = createSupabaseAdminClient();

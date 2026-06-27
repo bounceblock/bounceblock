@@ -3,12 +3,14 @@ import { Logo } from "@/components/brand/Logo";
 import { logout } from "@/app/(app)/actions";
 import { cn } from "@/lib/utils";
 
-type AdminKey = "overview" | "users" | "verifications";
+type AdminKey = "overview" | "users" | "verifications" | "subscriptions" | "payments";
 
 const NAV: { key: AdminKey; label: string; href: string }[] = [
   { key: "overview", label: "Overview", href: "/admin" },
   { key: "users", label: "Users", href: "/admin/users" },
   { key: "verifications", label: "Verifications", href: "/admin/verifications" },
+  { key: "subscriptions", label: "Subscriptions", href: "/admin/subscriptions" },
+  { key: "payments", label: "Payments", href: "/admin/payments" },
 ];
 
 /** Admin CRM shell — separate from the customer app. */

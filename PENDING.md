@@ -42,10 +42,10 @@
 - [ ] Post-signup onboarding step
 
 ### Admin CRM depth
-- [ ] User detail page (profile, subscription, usage, verification history)
-- [ ] Admin actions: change plan, grant credit, suspend, refund
-- [ ] Subscriptions / payments / referrals views
-- [ ] Search + filter + pagination on lists
+- [x] User detail page (profile, usage, verification history) ✅
+- [x] Admin actions: change plan, grant credit ✅ (suspend/refund: later)
+- [ ] Subscriptions / payments views
+- [x] Search on users ✅ (filter/pagination: later)
 
 ### App polish
 - [x] Loading skeletons for app + admin ✅
