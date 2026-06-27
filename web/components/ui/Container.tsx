@@ -1,0 +1,12 @@
+import { cn } from "@/lib/utils";
+
+/** Centered max-width page container. */
+export function Container({
+  className,
+  children,
+}: {
+  className?: string;
+  children: React.ReactNode;
+}) {
+  return <div className={cn("mx-auto w-full max-w-site px-7", className)}>{children}</div>;
+}
