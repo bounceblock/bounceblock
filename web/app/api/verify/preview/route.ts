@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { runPreview, type PreviewMapping } from "@/lib/verification/preview";
+import { rateLimit, clientIp } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -13,6 +14,10 @@ export const dynamic = "force-dynamic";
  * anonymous preview from being a cost/abuse hole.
  */
 export async function POST(req: NextRequest) {
+  if (!rateLimit(`preview:${clientIp(req)}`, 20, 60_000).ok) {
+    return NextResponse.json({ error: "Too many requests. Please wait a minute and try again." }, { status: 429 });
+  }
+
   let body: { rows?: Record<string, string>[]; mapping?: PreviewMapping };
   try {
     body = await req.json();

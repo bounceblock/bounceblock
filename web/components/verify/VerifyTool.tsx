@@ -10,6 +10,7 @@ import type { PreviewResult, PreviewMapping, PreviewSample } from "@/lib/verific
 const PREVIEW_LIMIT = 100;
 type Step = "upload" | "map" | "loading" | "results" | "error";
 type Field = keyof PreviewMapping;
+type FullStatus = "idle" | "processing" | "done";
 
 const FIELDS: { key: Field; label: string; hint: RegExp }[] = [
   { key: "email", label: "Email", hint: /e-?mail/i },
@@ -27,6 +28,18 @@ function autodetect(headers: string[]): PreviewMapping {
   return m;
 }
 
+function downloadCsv(csv: string, filename: string) {
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+}
+
 export function VerifyTool() {
   const [step, setStep] = useState<Step>("upload");
   const [fileName, setFileName] = useState("");
@@ -36,6 +49,8 @@ export function VerifyTool() {
   const [result, setResult] = useState<PreviewResult | null>(null);
   const [error, setError] = useState("");
   const [dragging, setDragging] = useState(false);
+  const [fullStatus, setFullStatus] = useState<FullStatus>("idle");
+  const [cleanReady, setCleanReady] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
 
   function ingest(parsed: Papa.ParseResult<Record<string, string>>, name: string) {
@@ -84,6 +99,7 @@ export function VerifyTool() {
       return;
     }
     setError("");
+    setFullStatus("idle");
     setStep("loading");
     try {
       const res = await fetch("/api/verify/preview", {
@@ -101,6 +117,30 @@ export function VerifyTool() {
     }
   }
 
+  async function getFull() {
+    setFullStatus("processing");
+    try {
+      const res = await fetch("/api/verify/process", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ rows, mapping }),
+      });
+      if (res.status === 401) {
+        // Live mode: full results are gated behind signup.
+        window.location.href = "/signup?next=/verify";
+        return;
+      }
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error ?? "Processing failed.");
+      downloadCsv(data.cleanCsv, "bounceblock_clean.csv");
+      setCleanReady(data.cleanRows ?? 0);
+      setFullStatus("done");
+    } catch (e) {
+      setFullStatus("idle");
+      setError(e instanceof Error ? e.message : "Processing failed.");
+    }
+  }
+
   function reset() {
     setStep("upload");
     setFileName("");
@@ -109,6 +149,8 @@ export function VerifyTool() {
     setMapping({});
     setResult(null);
     setError("");
+    setFullStatus("idle");
+    setCleanReady(0);
   }
 
   // ── UPLOAD ──
@@ -243,10 +285,24 @@ export function VerifyTool() {
   }
 
   // ── RESULTS ──
-  return result ? <ResultsCard result={result} onReset={reset} /> : null;
+  return result ? (
+    <ResultsCard result={result} onReset={reset} onGetFull={getFull} fullStatus={fullStatus} cleanReady={cleanReady} />
+  ) : null;
 }
 
-function ResultsCard({ result, onReset }: { result: PreviewResult; onReset: () => void }) {
+function ResultsCard({
+  result,
+  onReset,
+  onGetFull,
+  fullStatus,
+  cleanReady,
+}: {
+  result: PreviewResult;
+  onReset: () => void;
+  onGetFull: () => void;
+  fullStatus: FullStatus;
+  cleanReady: number;
+}) {
   const { analyzed, email, phone, duplicates, qualityScore, cleanCount, samples, mock } = result;
   const problems = email.invalid + email.unknown + email.catchAll + duplicates;
   const pct = (n: number) => (analyzed ? Math.round((n / analyzed) * 100) : 0);
@@ -291,9 +347,7 @@ function ResultsCard({ result, onReset }: { result: PreviewResult; onReset: () =
             {analyzed.toLocaleString()} contacts analyzed · {problems.toLocaleString()} problems found
           </p>
           {phone.total > 0 && (
-            <p className="mt-1 text-[13px] text-ink-3">
-              Phones: {phone.valid}/{phone.total} active
-            </p>
+            <p className="mt-1 text-[13px] text-ink-3">Phones: {phone.valid}/{phone.total} active</p>
           )}
         </div>
       </div>
@@ -329,17 +383,29 @@ function ResultsCard({ result, onReset }: { result: PreviewResult; onReset: () =
         </p>
       )}
 
-      <div className="mt-6 flex flex-wrap items-center justify-between gap-4 rounded-lg border border-brand/25 bg-brand-wash/60 px-5 py-4">
-        <div>
-          <b className="text-[15px]">{cleanCount.toLocaleString()} clean leads ready</b>
-          <span className="block text-[12.8px] text-ink-2">Unlock the full verified file + downloads</span>
+      {fullStatus === "done" ? (
+        <div className="mt-6 flex flex-wrap items-center justify-between gap-4 rounded-lg border border-brand/25 bg-brand-wash/60 px-5 py-4">
+          <div>
+            <b className="text-[15px]">Downloaded {cleanReady.toLocaleString()} clean leads ✓</b>
+            <span className="block text-[12.8px] text-ink-2">Saved as bounceblock_clean.csv</span>
+          </div>
+          <Button onClick={onReset} variant="ghost">Verify another list</Button>
         </div>
-        <Button href="/signup">Get full results</Button>
-      </div>
+      ) : (
+        <div className="mt-6 flex flex-wrap items-center justify-between gap-4 rounded-lg border border-brand/25 bg-brand-wash/60 px-5 py-4">
+          <div>
+            <b className="text-[15px]">{cleanCount.toLocaleString()} clean leads ready</b>
+            <span className="block text-[12.8px] text-ink-2">Process the full list and download the clean file</span>
+          </div>
+          <Button onClick={onGetFull}>{fullStatus === "processing" ? "Processing…" : "Get full results →"}</Button>
+        </div>
+      )}
 
-      <button onClick={onReset} className="mt-5 text-[13px] text-ink-3 underline hover:text-ink">
-        Verify another list
-      </button>
+      {fullStatus !== "done" && (
+        <button onClick={onReset} className="mt-5 text-[13px] text-ink-3 underline hover:text-ink">
+          Verify another list
+        </button>
+      )}
     </div>
   );
 }

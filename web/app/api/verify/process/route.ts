@@ -3,6 +3,7 @@ import { runFull } from "@/lib/verification/process";
 import type { PreviewMapping } from "@/lib/verification/preview";
 import { config } from "@/lib/config";
 import { getUser } from "@/lib/auth";
+import { rateLimit, clientIp } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -19,6 +20,10 @@ export const maxDuration = 60;
  * and run via the queue worker for large lists instead of inline.
  */
 export async function POST(req: NextRequest) {
+  if (!rateLimit(`process:${clientIp(req)}`, 10, 60_000).ok) {
+    return NextResponse.json({ error: "Too many requests. Please wait a minute and try again." }, { status: 429 });
+  }
+
   let body: { rows?: Record<string, string>[]; mapping?: PreviewMapping };
   try {
     body = await req.json();

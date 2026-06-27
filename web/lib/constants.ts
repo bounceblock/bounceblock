@@ -65,11 +65,12 @@ export const FOOTER = {
     { label: "Verify tool", href: "/verify" },
     { label: "Pricing", href: "/pricing" },
     { label: "Integrations", href: "/integrations" },
-    { label: "API", href: "/pricing" },
+    { label: "API", href: "/api-docs" },
   ],
   Company: [
     { label: "About", href: "/about" },
     { label: "Blog", href: "/blog" },
+    { label: "Contact", href: "/contact" },
     { label: "Case studies", href: "/case-studies" },
     { label: "Alternatives", href: "/alternatives" },
     { label: "Locations", href: "/locations" },

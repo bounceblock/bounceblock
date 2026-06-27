@@ -20,6 +20,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/use-cases",
     "/alternatives",
     "/locations",
+    "/contact",
+    "/api-docs",
     "/blog",
     ...POSTS.map((p) => `/blog/${p.slug}`),
     ...Object.keys(LEGAL).map((k) => `/legal/${k}`),
