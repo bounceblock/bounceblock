@@ -62,7 +62,7 @@ export default async function HistoryPage() {
                     <td className="px-5 py-3">{r.rows_processed.toLocaleString()}</td>
                     <td className="px-5 py-3 font-semibold">{r.quality_score ?? "—"}</td>
                     <td className="px-5 py-3">{r.clean_count.toLocaleString()}</td>
-                    <td className="px-5 py-3 text-right"><span className="text-brand-deep">Download</span></td>
+                    <td className="px-5 py-3 text-right"><a href={`/api/download/${r.id}`} className="text-brand-deep hover:underline">Download</a></td>
                   </tr>
                 ))}
               </tbody>

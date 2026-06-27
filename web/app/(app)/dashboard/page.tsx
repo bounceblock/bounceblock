@@ -86,7 +86,7 @@ export default async function DashboardPage() {
                 <span className="text-ink-2">{new Date(r.created_at).toLocaleDateString()}</span>
                 <span className="font-semibold">Score {r.quality_score ?? "—"}</span>
                 <span className="text-ink-2">{r.clean_count.toLocaleString()} clean</span>
-                <span className="ml-auto text-brand-deep">Download</span>
+                <a href={`/api/download/${r.id}`} className="ml-auto text-brand-deep hover:underline">Download</a>
               </div>
             ))}
           </div>

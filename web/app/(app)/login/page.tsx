@@ -24,7 +24,10 @@ export default function LoginPage({ searchParams }: { searchParams: { error?: st
         <Button type="submit">Log in</Button>
       </form>
 
-      <p className="mt-5 text-center text-sm text-ink-2">
+      <p className="mt-3 text-center text-[13px]">
+        <Link href="/forgot" className="text-ink-3 transition-colors hover:text-ink">Forgot password?</Link>
+      </p>
+      <p className="mt-3 text-center text-sm text-ink-2">
         New here?{" "}
         <Link href="/signup" className="font-medium text-brand-deep underline">Create a free account</Link>
       </p>

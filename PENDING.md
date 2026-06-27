@@ -25,10 +25,11 @@
 ## 🛠️ Technical — Claude to finish (top-to-bottom)
 
 ### Backend / processing pipeline
-- [ ] Persist `uploads` + `verifications` rows after full processing (when Supabase configured)
-- [ ] Store clean file in Supabase Storage; wire dashboard/history **Download** to signed URLs
-- [ ] Enforce monthly **quota** (block + upgrade prompt when over allowance)
-- [ ] Send **results-ready** email after processing + **receipt** email from webhook
+- [x] Persist `uploads` + `verifications` rows after full processing ✅
+- [x] Store clean file in Supabase Storage + email signed download link ✅
+- [ ] Wire dashboard/history **Download** buttons to signed URLs
+- [x] Enforce monthly **quota** (402 + upgrade prompt when over) ✅
+- [x] **results-ready** email after processing + **receipt** email from webhook ✅
 - [ ] Move large-list processing to a **queue worker** (Inngest/QStash adapter)
 
 ### Public API
