@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "description": "BounceBlock.io — Clean leads. Higher conversions. Email + phone verification SaaS.",
+  "engines": {
+    "node": "22.x"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",

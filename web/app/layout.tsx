@@ -45,6 +45,10 @@ export const metadata: Metadata = {
     title: `${SITE.name} — ${SITE.tagline}`,
     description: SITE.description,
   },
+  verification: {
+    // Google Search Console — HTML-tag verification (keep this; removing it un-verifies the property)
+    google: "uWmkAzqyPD5vfC_1e74-jefhDy-XkYCfik9Kd1vk7hM",
+  },
 };
 
 export default function RootLayout({
