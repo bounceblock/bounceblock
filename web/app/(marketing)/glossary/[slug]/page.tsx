@@ -5,7 +5,7 @@ import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 import { FinalCta } from "@/components/marketing/FinalCta";
 import { JsonLd } from "@/components/JsonLd";
-import { definedTermLd, breadcrumbLd } from "@/lib/jsonld";
+import { definedTermLd, breadcrumbLd, faqLd } from "@/lib/jsonld";
 import { GLOSSARY, getTerm } from "@/lib/glossary";
 import { pageMeta } from "@/lib/seo-meta";
 
@@ -27,6 +27,7 @@ export default function GlossaryTermPage({ params }: { params: { slug: string } 
   return (
     <>
       <JsonLd data={definedTermLd(t)} />
+      {t.faq && t.faq.length > 0 && <JsonLd data={faqLd(t.faq)} />}
       <JsonLd data={breadcrumbLd([
         { name: "Home", path: "/" },
         { name: "Glossary", path: "/glossary" },
@@ -45,6 +46,40 @@ export default function GlossaryTermPage({ params }: { params: { slug: string } 
           ))}
         </div>
 
+        {/* Long-form sections (H2 + paragraphs + optional bullet lists) */}
+        {t.sections?.map((s) => (
+          <section key={s.heading} className="mt-11">
+            <h2 className="font-serif text-[24px] leading-tight">{s.heading}</h2>
+            {s.paras?.map((p, i) => (
+              <p key={i} className="mt-4 text-[16.5px] leading-relaxed text-ink-2">{p}</p>
+            ))}
+            {s.bullets && (
+              <ul className="mt-4 grid gap-2.5">
+                {s.bullets.map((b, i) => (
+                  <li key={i} className="flex items-start gap-3 text-[16px] leading-relaxed text-ink-2">
+                    <span className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-brand" />
+                    {b}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </section>
+        ))}
+
+        {/* Key takeaways callout */}
+        {t.takeaways && t.takeaways.length > 0 && (
+          <div className="mt-11 rounded-2xl border border-hair bg-sunk/40 p-6">
+            <h2 className="text-[15px] font-semibold uppercase tracking-wide text-brand-deep">Key takeaways</h2>
+            <ul className="mt-4 grid gap-2.5">
+              {t.takeaways.map((b, i) => (
+                <li key={i} className="flex items-start gap-3 text-[15.5px] leading-relaxed text-ink-2">
+                  <span className="mt-1 text-brand">✓</span>{b}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
         <div className="mt-10 flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-brand/25 bg-brand-wash/50 px-6 py-5">
           <div>
             <b className="text-[15px]">Verify email, phone and company in one upload</b>
@@ -52,6 +87,21 @@ export default function GlossaryTermPage({ params }: { params: { slug: string } 
           </div>
           <Button href="/signup">Clean my list free →</Button>
         </div>
+
+        {/* FAQ (renders FAQPage schema above) */}
+        {t.faq && t.faq.length > 0 && (
+          <div className="mt-12">
+            <h2 className="font-serif text-2xl">Frequently asked questions</h2>
+            <div className="mt-5 grid gap-4">
+              {t.faq.map((f) => (
+                <div key={f.q} className="rounded-2xl border border-hair bg-raised p-6 shadow-s1">
+                  <h3 className="text-[16px] font-semibold">{f.q}</h3>
+                  <p className="mt-2 text-[15px] leading-relaxed text-ink-2">{f.a}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         {related.length > 0 && (
           <div className="mt-12">

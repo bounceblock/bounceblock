@@ -105,6 +105,32 @@ export function AlternativeLanding({ alt, related }: { alt: AltEntry; related: A
         </Container>
       </section>
 
+      {/* long-form comparison body */}
+      {x?.sections && x.sections.length > 0 && (
+        <section className="border-t border-hair py-16">
+          <Container className="max-w-3xl">
+            {x.sections.map((s) => (
+              <div key={s.heading} className="mt-12 first:mt-0">
+                <h2 className="font-serif text-[26px] leading-tight">{s.heading}</h2>
+                {s.paras?.map((p, i) => (
+                  <p key={i} className="mt-4 text-[16.5px] leading-relaxed text-ink-2">{p}</p>
+                ))}
+                {s.bullets && (
+                  <ul className="mt-4 grid gap-2.5">
+                    {s.bullets.map((b, i) => (
+                      <li key={i} className="flex items-start gap-3 text-[16px] leading-relaxed text-ink-2">
+                        <span className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-brand" />
+                        {b}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            ))}
+          </Container>
+        </section>
+      )}
+
       <HowItWorks />
 
       {x && (
