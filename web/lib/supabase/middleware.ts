@@ -1,58 +1,46 @@
-import { createServerClient, type CookieOptions } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 import { config } from "@/lib/config";
 
 const PROTECTED = ["/dashboard", "/history", "/billing", "/settings", "/welcome"];
 
-/** Refresh the Supabase session on every request and guard protected routes. */
+/**
+ * Edge-safe route guard.
+ *
+ * It deliberately does NOT import @supabase/ssr / supabase-js. That chain pulls
+ * Node-only modules (realtime-js → `ws`, plus `@supabase/node-fetch`) into the
+ * Edge middleware bundle, which Vercel's Edge runtime rejects ("referencing
+ * unsupported modules") even though they never execute there.
+ *
+ * Instead we do a fast cookie-PRESENCE redirect at the edge: if a request hits a
+ * protected/admin route without a Supabase auth cookie, bounce it to /login.
+ * The REAL session validation still happens server-side — every protected page
+ * calls getUser() (→ supabase.auth.getUser(), which verifies the token) and the
+ * /admin tree is guarded by isAdmin() in its layout. So a forged or expired
+ * cookie loads no data; this guard is purely a UX fast-path, not the security
+ * boundary. Token refresh happens in server actions / route handlers (Node
+ * runtime), where cookies can be written.
+ */
 export async function updateSession(request: NextRequest) {
-  let response = NextResponse.next({ request });
+  const response = NextResponse.next({ request });
 
   // Not configured yet → no-op (app still works in demo mode).
   if (!config.hasSupabase()) return response;
 
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll() {
-          return request.cookies.getAll();
-        },
-        setAll(cookiesToSet: { name: string; value: string; options: CookieOptions }[]) {
-          cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value));
-          response = NextResponse.next({ request });
-          cookiesToSet.forEach(({ name, value, options }) => response.cookies.set(name, value, options));
-        },
-      },
-    }
-  );
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
   const path = request.nextUrl.pathname;
-  if (!user && PROTECTED.some((p) => path.startsWith(p))) {
+  const needsAuth = path.startsWith("/admin") || PROTECTED.some((p) => path.startsWith(p));
+  if (!needsAuth) return response;
+
+  // Supabase stores the session in cookies named `sb-<ref>-auth-token` (possibly
+  // chunked with `.0`, `.1`). Presence is enough for the redirect decision.
+  const signedIn = request.cookies
+    .getAll()
+    .some((c) => c.name.startsWith("sb-") && c.name.includes("-auth-token"));
+
+  if (!signedIn) {
     const url = request.nextUrl.clone();
     url.pathname = "/login";
     url.searchParams.set("next", path);
     return NextResponse.redirect(url);
-  }
-
-  // Admin area: require an allow-listed admin email.
-  if (path.startsWith("/admin")) {
-    const admins = (process.env.ADMIN_EMAILS ?? "")
-      .split(",")
-      .map((s) => s.trim().toLowerCase())
-      .filter(Boolean);
-    if (!user || !admins.includes((user.email ?? "").toLowerCase())) {
-      const url = request.nextUrl.clone();
-      url.pathname = "/login";
-      // Send admins back to where they were headed after they authenticate.
-      if (!user) url.searchParams.set("next", path);
-      return NextResponse.redirect(url);
-    }
   }
 
   return response;
