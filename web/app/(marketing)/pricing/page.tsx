@@ -7,5 +7,7 @@ export const metadata: Metadata = {
 };
 
 export default function PricingPage() {
-  return <Pricing />;
+  // headingAs="h1" so the dedicated pricing page has a proper top-level <h1>
+  // (used as a homepage section, <Pricing> stays h2).
+  return <Pricing headingAs="h1" />;
 }

@@ -83,6 +83,7 @@ export const FOOTER = {
     { label: "Research", href: "/research" },
     { label: "Reviews", href: "/reviews" },
     { label: "Compare tools", href: "/compare" },
+    { label: "Alternatives", href: "/alternatives" },
     { label: "Glossary", href: "/glossary" },
     { label: "Help center", href: "/help" },
   ],

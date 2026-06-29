@@ -8,13 +8,14 @@ import { CheckoutButton } from "@/components/billing/CheckoutButton";
 import { PLANS } from "@/lib/plans";
 import { cn } from "@/lib/utils";
 
-export function Pricing() {
+export function Pricing({ headingAs = "h2" }: { headingAs?: "h1" | "h2" } = {}) {
   const [annual, setAnnual] = useState(false);
 
   return (
     <section id="pricing" className="py-20">
       <Container>
         <SectionHead
+          as={headingAs}
           eyebrow="Simple, flat pricing"
           title="One price. No credits. No surprises."
           sub="Pay a flat monthly rate and verify your lists — emails and phones included. Cancel anytime."
