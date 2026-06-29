@@ -1,4 +1,6 @@
 /** Blog content (Phase 6). Real, useful SEO articles for the BounceBlock audience. */
+import { POSTS_A } from "@/lib/blog-extra-a";
+import { POSTS_B } from "@/lib/blog-extra-b";
 
 export interface BlogSection {
   heading: string;
@@ -15,9 +17,26 @@ export interface BlogPost {
   category: string;
   intro: string;
   sections: BlogSection[];
+  /** Optional explicit author override; otherwise derived from category. */
+  authorId?: string;
 }
 
-export const POSTS: BlogPost[] = [
+/**
+ * Map a post to an author id (E-E-A-T byline). Uses an explicit `authorId`
+ * if set, else assigns by topic so each post has a credible, on-topic byline.
+ */
+export function postAuthorId(post: { authorId?: string; category: string }): string {
+  if (post.authorId) return post.authorId;
+  const c = post.category.toLowerCase();
+  if (c.includes("phone")) return "priya-nair";
+  if (c.includes("deliverability")) return "maya-okonkwo";
+  if (c.includes("data") || c.includes("company")) return "daniel-reyes";
+  if (c.includes("verification")) return "daniel-reyes";
+  if (c.includes("hygiene") || c.includes("lead")) return "priya-nair";
+  return "maya-okonkwo";
+}
+
+const CORE_POSTS: BlogPost[] = [
   {
     slug: "how-to-reduce-email-bounce-rate",
     title: "How to reduce your email bounce rate (and why it matters)",
@@ -114,6 +133,83 @@ export const POSTS: BlogPost[] = [
   },
 ];
 
+/** All posts, newest first. */
+export const POSTS: BlogPost[] = [...CORE_POSTS, ...POSTS_A, ...POSTS_B].sort((a, b) => (a.date < b.date ? 1 : -1));
+
 export function getPost(slug: string) {
   return POSTS.find((p) => p.slug === slug);
+}
+
+/** URL-safe slug for a category label (e.g. "Company & data" → "company-and-data"). */
+export function categorySlug(label: string): string {
+  return label.toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+}
+
+/** Distinct categories with post counts, most-populated first. */
+export function getCategories(): { slug: string; label: string; count: number }[] {
+  const map = new Map<string, { label: string; count: number }>();
+  for (const p of POSTS) {
+    const slug = categorySlug(p.category);
+    const cur = map.get(slug);
+    if (cur) cur.count++;
+    else map.set(slug, { label: p.category, count: 1 });
+  }
+  return [...map.entries()].map(([slug, v]) => ({ slug, ...v })).sort((a, b) => b.count - a.count);
+}
+
+export function getCategory(slug: string) {
+  return getCategories().find((c) => c.slug === slug);
+}
+
+export function postsInCategory(slug: string): BlogPost[] {
+  return POSTS.filter((p) => categorySlug(p.category) === slug);
+}
+
+/**
+ * Internal links from a post to relevant product/tool/glossary pages, keyed by
+ * category. Strengthens internal linking from blog content to "money" pages —
+ * one of the highest-leverage SEO levers.
+ */
+type ResLink = { href: string; label: string };
+const RESOURCES: Record<string, ResLink[]> = {
+  Deliverability: [
+    { href: "/glossary/email-deliverability", label: "Email deliverability" },
+    { href: "/glossary/sender-reputation", label: "Sender reputation" },
+    { href: "/tools/spf-checker", label: "SPF checker" },
+    { href: "/tools/dmarc-checker", label: "DMARC checker" },
+    { href: "/product/email-verification", label: "Email verification" },
+  ],
+  "Email verification": [
+    { href: "/glossary/email-verification", label: "What is email verification?" },
+    { href: "/glossary/catch-all-email", label: "Catch-all email" },
+    { href: "/tools/email-verifier", label: "Free email verifier" },
+    { href: "/product/bulk-email-verification", label: "Bulk verification" },
+  ],
+  "Phone validation": [
+    { href: "/glossary/phone-validation", label: "Phone validation" },
+    { href: "/glossary/line-type", label: "Line type" },
+    { href: "/tools/phone-validator", label: "Free phone validator" },
+    { href: "/product/phone-verification", label: "Phone verification" },
+  ],
+  "Company & data": [
+    { href: "/glossary/data-enrichment", label: "Data enrichment" },
+    { href: "/glossary/firmographics", label: "Firmographics" },
+    { href: "/product/company-verification", label: "Company verification" },
+    { href: "/product/data-enrichment", label: "Lead & data enrichment" },
+  ],
+  "Lead gen": [
+    { href: "/glossary/list-hygiene", label: "List hygiene" },
+    { href: "/tools/bounce-rate-calculator", label: "Bounce-rate calculator" },
+    { href: "/product/email-verification", label: "Email verification" },
+  ],
+};
+const DEFAULT_RES: ResLink[] = [
+  { href: "/glossary/list-hygiene", label: "List hygiene" },
+  { href: "/glossary/bounce-rate", label: "Bounce rate" },
+  { href: "/tools/email-verifier", label: "Free email verifier" },
+  { href: "/product/email-verification", label: "Email verification" },
+];
+
+export function resourcesFor(category: string): ResLink[] {
+  return RESOURCES[category] ?? DEFAULT_RES;
 }

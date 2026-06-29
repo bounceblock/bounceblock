@@ -52,6 +52,21 @@ export const INDUSTRIES: SeoEntry[] = [
   { slug: "moving-companies", label: "Moving Companies", pain: "Quote leads are duplicated across lead vendors.", benefit: "Stop paying to call the same bad lead twice." },
   { slug: "photography", label: "Photography", pain: "Booking inquiry lists go cold and bounce.", benefit: "Re-book past clients with deliverable emails." },
   { slug: "landscaping", label: "Landscaping", pain: "Seasonal client lists drift out of date.", benefit: "Reach customers before every season." },
+  { slug: "medical-spas", label: "Medical Spas", pain: "Client lists fill with old emails between treatments.", benefit: "Rebook clients with outreach that actually lands." },
+  { slug: "travel-agencies", label: "Travel Agencies", pain: "Traveler contact data ages out between trips.", benefit: "Reach past travelers with deliverable offers." },
+  { slug: "debt-collection", label: "Debt Collection", pain: "Skip-traced contact data is full of wrong numbers.", benefit: "Dial connected numbers and stay compliant." },
+  { slug: "franchises", label: "Franchises", pain: "Each location's list is messy and formatted differently.", benefit: "Clean every location's list to one standard." },
+  { slug: "tutoring", label: "Tutoring & Test Prep", pain: "Parent and student contacts churn each term.", benefit: "Keep enrollment outreach deliverable." },
+  { slug: "veterinary", label: "Veterinary Clinics", pain: "Reminder emails bounce off old client lists.", benefit: "Fill the schedule with reachable pet owners." },
+  { slug: "chiropractic", label: "Chiropractic", pain: "Recall lists collect dead emails over years.", benefit: "Reactivate patients with outreach that lands." },
+  { slug: "interior-design", label: "Interior Design", pain: "Past-client and lead lists go cold and bounce.", benefit: "Re-engage clients who are ready to remodel." },
+  { slug: "catering", label: "Catering", pain: "Event inquiry lists are full of typos and dupes.", benefit: "Book events by reaching real inquiries." },
+  { slug: "printing", label: "Printing & Signage", pain: "B2B buyer lists carry years of stale contacts.", benefit: "Reach buyers without burning sender reputation." },
+  { slug: "security-services", label: "Security Services", pain: "Commercial lead lists mix real businesses with junk.", benefit: "Pay reps to call qualified, reachable leads." },
+  { slug: "it-services", label: "IT Services & MSPs", pain: "Prospect lists age out between sales cycles.", benefit: "Stay deliverable when clients are ready to switch." },
+  { slug: "architecture", label: "Architecture Firms", pain: "Networking and RFP lists go cold quickly.", benefit: "Re-engage contacts that still exist." },
+  { slug: "car-rental", label: "Car Rental", pain: "Customer win-back lists rot between rentals.", benefit: "Bring customers back with deliverable offers." },
+  { slug: "property-developers", label: "Property Developers", pain: "Buyer and investor lists drift out of date.", benefit: "Reach buyers and investors on the first try." },
 ];
 
 export const USE_CASES: SeoEntry[] = [
@@ -81,6 +96,20 @@ export const USE_CASES: SeoEntry[] = [
   { slug: "event-lead-cleanup", label: "Clean Event Leads", pain: "Badge-scanned leads are full of typos.", benefit: "Turn scanned badges into reachable contacts." },
   { slug: "dialer-list-validation", label: "Validate a Dialer List", pain: "Dialers burn time on disconnected numbers.", benefit: "Feed your dialer only live, valid numbers." },
   { slug: "reactivation-campaigns", label: "Clean Lists for Reactivation", pain: "Win-back sends bounce off long-dormant contacts.", benefit: "Re-engage only contacts that still exist." },
+  { slug: "verify-hubspot-list", label: "Verify a HubSpot List", pain: "HubSpot contacts decay and quietly raise bounces.", benefit: "Export, verify and re-import a clean HubSpot list." },
+  { slug: "clean-mailchimp-audience", label: "Clean a Mailchimp Audience", pain: "Inactive and dead subscribers drag down your audience.", benefit: "Trim the dead weight and lift your open rates." },
+  { slug: "validate-salesforce-contacts", label: "Validate Salesforce Contacts", pain: "Salesforce data ages and skews your reporting.", benefit: "Hand reps verified, reachable Salesforce contacts." },
+  { slug: "clean-shopify-customers", label: "Clean Shopify Customers", pain: "Customer lists rot and hurt promo deliverability.", benefit: "Keep store emails landing in the inbox." },
+  { slug: "verify-sms-list", label: "Verify an SMS Marketing List", pain: "Texting dead or wrong-type numbers wastes spend.", benefit: "Send SMS only to live, textable mobiles." },
+  { slug: "clean-paid-ad-leads", label: "Clean Paid Ad Lead Forms", pain: "Lead-form ads attract fake and typo'd contacts.", benefit: "Stop paying to follow up on junk leads." },
+  { slug: "verify-signup-emails", label: "Verify Signup Emails", pain: "Signup forms let invalid and fake emails through.", benefit: "Catch bad addresses before they enter your CRM." },
+  { slug: "clean-csv-file", label: "Clean a CSV File", pain: "Raw CSVs are full of invalids, dupes and bad numbers.", benefit: "Upload a CSV and get a verified file back in minutes." },
+  { slug: "verify-b2b-leads", label: "Verify B2B Leads", pain: "B2B lists mix real businesses with free-email fakes.", benefit: "Qualify and verify leads down to real companies." },
+  { slug: "clean-google-sheet", label: "Clean a List in Google Sheets", pain: "Sheets-based lists go stale and never get checked.", benefit: "Export, verify and paste back a clean sheet." },
+  { slug: "validate-international-numbers", label: "Validate International Phone Numbers", pain: "International numbers are hard to format and verify.", benefit: "Validate numbers across 30+ countries in one pass." },
+  { slug: "verify-ecommerce-customers", label: "Verify Ecommerce Customers", pain: "Store customer data decays and bounces on promos.", benefit: "Reach buyers with offers that actually land." },
+  { slug: "clean-recruiting-list", label: "Clean a Recruiting Candidate List", pain: "Candidate emails and numbers go stale fast.", benefit: "Reach candidates on the first email or call." },
+  { slug: "verify-donor-list", label: "Verify a Donor List", pain: "Donor lists silently degrade and waste appeals.", benefit: "Protect deliverability so appeals get seen." },
 ];
 
 export function getIndustry(slug: string) {

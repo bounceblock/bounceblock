@@ -16,7 +16,8 @@ export async function submitContact(formData: FormData) {
     await sendRawEmail(
       SITE.email.support,
       `Contact form — ${name || email}`,
-      `<p><b>From:</b> ${esc(name)} (${esc(email)})</p><p>${esc(message)}</p>`
+      `<p><b>From:</b> ${esc(name)} (${esc(email)})</p><p>${esc(message)}</p>`,
+      { replyTo: email } // reply goes straight to the person who wrote in
     );
   } catch {
     // non-blocking

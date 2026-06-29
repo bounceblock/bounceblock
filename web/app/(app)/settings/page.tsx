@@ -6,11 +6,12 @@ import { Button } from "@/components/ui/Button";
 import { BillingPortalButton } from "@/components/billing/BillingPortalButton";
 import { AppShell } from "@/components/app/AppShell";
 import { ApiKeysCard } from "@/components/app/ApiKeysCard";
+import { TeamCard } from "@/components/app/TeamCard";
 import { logout } from "../actions";
 
 export const metadata: Metadata = { title: "Settings" };
 
-export default async function SettingsPage() {
+export default async function SettingsPage({ searchParams }: { searchParams: { team_invited?: string; team_removed?: string; team_demo?: string; team_error?: string } }) {
   const user = await getUser();
 
   let plan = "free";
@@ -44,6 +45,18 @@ export default async function SettingsPage() {
 
       <div className="mt-6">
         <ApiKeysCard />
+      </div>
+
+      <div className="mt-6">
+        <TeamCard
+          plan={plan}
+          flash={{
+            invited: Boolean(searchParams.team_invited),
+            removed: Boolean(searchParams.team_removed),
+            demo: Boolean(searchParams.team_demo),
+            error: searchParams.team_error,
+          }}
+        />
       </div>
 
       <div className="mt-6 rounded-2xl border border-hair bg-raised p-6 shadow-s1">

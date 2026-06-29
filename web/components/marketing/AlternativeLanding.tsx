@@ -4,7 +4,10 @@ import { Button } from "@/components/ui/Button";
 import { SectionHead } from "@/components/marketing/SectionHead";
 import { HowItWorks } from "@/components/marketing/HowItWorks";
 import { FinalCta } from "@/components/marketing/FinalCta";
+import { JsonLd } from "@/components/JsonLd";
+import { faqLd } from "@/lib/jsonld";
 import type { AltEntry } from "@/lib/seo-data";
+import { getAlternativeExtra } from "@/lib/alternative-extra";
 
 function Cell({ v, us }: { v: string | boolean; us?: boolean }) {
   if (v === true) return <span className={us ? "font-semibold text-brand" : "text-brand"}>✓</span>;
@@ -13,6 +16,7 @@ function Cell({ v, us }: { v: string | boolean; us?: boolean }) {
 }
 
 export function AlternativeLanding({ alt, related }: { alt: AltEntry; related: AltEntry[] }) {
+  const x = getAlternativeExtra(alt.slug); // unique, competitor-specific copy
   const isCredit = alt.model.toLowerCase().includes("credit") || alt.model.toLowerCase().includes("pay");
   const rows: [string, string | boolean, string | boolean][] = [
     ["Pricing model", "Flat monthly", alt.model],
@@ -23,7 +27,7 @@ export function AlternativeLanding({ alt, related }: { alt: AltEntry; related: A
     ["Clean file in under 2 min", true, true],
   ];
 
-  const reasons = [
+  const reasons = x?.whySwitch ?? [
     { t: "Phone validation included", d: `${alt.label} verifies email${alt.phone ? "" : " only"}. BounceBlock validates phones in the same upload — no second tool.` },
     { t: "Flat pricing, no credits", d: "One simple monthly price with a generous allowance, instead of buying and tracking credits." },
     { t: "Built for small teams", d: alt.why },
@@ -31,6 +35,7 @@ export function AlternativeLanding({ alt, related }: { alt: AltEntry; related: A
 
   return (
     <>
+      {x && <JsonLd data={faqLd(x.faq)} />}
       <section className="relative overflow-hidden border-b border-hair">
         <div className="pointer-events-none absolute inset-x-0 -top-32 h-[420px] bg-[radial-gradient(40%_60%_at_28%_28%,rgba(46,169,78,.13),transparent_70%),radial-gradient(36%_50%_at_76%_22%,rgba(27,127,212,.11),transparent_70%)] blur-2xl" />
         <Container className="relative py-16">
@@ -39,7 +44,7 @@ export function AlternativeLanding({ alt, related }: { alt: AltEntry; related: A
             BounceBlock vs {alt.label}
           </h1>
           <p className="mt-5 max-w-2xl text-[18px] text-ink-2">
-            An honest look at how BounceBlock compares to {alt.label} — on pricing, phone validation and simplicity.
+            {x?.intro ?? `An honest look at how BounceBlock compares to ${alt.label} — on pricing, phone validation and simplicity.`}
           </p>
           <div className="mt-7 flex flex-wrap gap-3">
             <Button href="/signup" size="lg">Try BounceBlock free →</Button>
@@ -101,6 +106,22 @@ export function AlternativeLanding({ alt, related }: { alt: AltEntry; related: A
       </section>
 
       <HowItWorks />
+
+      {x && (
+        <section className="py-16">
+          <Container className="max-w-3xl">
+            <SectionHead eyebrow="Questions" title={`BounceBlock vs ${alt.label} — FAQ`} />
+            <div className="grid gap-4">
+              {x.faq.map((f) => (
+                <div key={f.q} className="rounded-2xl border border-hair bg-raised p-6 shadow-s1">
+                  <h3 className="text-[16px] font-semibold">{f.q}</h3>
+                  <p className="mt-2 text-[15px] text-ink-2">{f.a}</p>
+                </div>
+              ))}
+            </div>
+          </Container>
+        </section>
+      )}
 
       <section className="py-12">
         <Container>

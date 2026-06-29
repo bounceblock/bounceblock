@@ -4,8 +4,12 @@ import { notFound } from "next/navigation";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 import { JsonLd } from "@/components/JsonLd";
-import { articleLd } from "@/lib/jsonld";
-import { POSTS, getPost } from "@/lib/blog";
+import { articleLd, breadcrumbLd } from "@/lib/jsonld";
+import { POSTS, getPost, resourcesFor, postAuthorId } from "@/lib/blog";
+import { getAuthor } from "@/lib/authors";
+import { personLd } from "@/lib/jsonld";
+import { Byline } from "@/components/marketing/Byline";
+import { pageMeta } from "@/lib/seo-meta";
 
 export function generateStaticParams() {
   return POSTS.map((p) => ({ slug: p.slug }));
@@ -13,7 +17,9 @@ export function generateStaticParams() {
 
 export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
   const p = getPost(params.slug);
-  return p ? { title: p.title, description: p.description } : {};
+  if (!p) return {};
+  const meta = pageMeta({ title: p.title, description: p.description, path: `/blog/${p.slug}` });
+  return { ...meta, openGraph: { ...meta.openGraph, type: "article", publishedTime: p.date } };
 }
 
 function fmt(d: string) {
@@ -24,17 +30,29 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
   const post = getPost(params.slug);
   if (!post) notFound();
   const related = POSTS.filter((p) => p.slug !== post.slug).slice(0, 2);
+  const resources = resourcesFor(post.category);
+  const author = getAuthor(postAuthorId(post));
 
   return (
     <article>
       <JsonLd data={articleLd(post)} />
+      {author && <JsonLd data={personLd(author)} />}
+      <JsonLd data={breadcrumbLd([
+        { name: "Home", path: "/" },
+        { name: "Blog", path: "/blog" },
+        { name: post.title, path: `/blog/${post.slug}` },
+      ])} />
       <Container className="max-w-3xl py-16">
         <Link href="/blog" className="text-[13.5px] font-medium text-brand-deep">← All articles</Link>
         <div className="mt-5 flex items-center gap-2 text-[12px] font-semibold uppercase tracking-wide text-brand-deep">
           <span className="h-1.5 w-1.5 rounded-full bg-brand" /> {post.category}
         </div>
         <h1 className="mt-3 font-serif text-[clamp(30px,4.4vw,46px)] leading-[1.1]">{post.title}</h1>
-        <p className="mt-3 text-[13.5px] text-ink-3">{fmt(post.date)} · {post.readMins} min read</p>
+        {author ? (
+          <div className="mt-5"><Byline author={author} date={fmt(post.date)} readMins={post.readMins} /></div>
+        ) : (
+          <p className="mt-3 text-[13.5px] text-ink-3">{fmt(post.date)} · {post.readMins} min read</p>
+        )}
         <p className="mt-6 text-[19px] leading-relaxed text-ink-2">{post.intro}</p>
 
         <div className="mt-10 space-y-9">
@@ -64,6 +82,17 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
             <span className="block text-[13px] text-ink-2">Free preview of your first 100 contacts — no credit card.</span>
           </div>
           <Button href="/signup">Clean my list free →</Button>
+        </div>
+
+        <div className="mt-10">
+          <h2 className="font-serif text-lg">Related guides &amp; tools</h2>
+          <div className="mt-3 flex flex-wrap gap-2.5">
+            {resources.map((r) => (
+              <Link key={r.href} href={r.href} className="rounded-full border border-hair bg-raised px-4 py-2 text-[13.5px] text-ink-2 transition-colors hover:border-brand hover:text-brand-deep">
+                {r.label}
+              </Link>
+            ))}
+          </div>
         </div>
       </Container>
 

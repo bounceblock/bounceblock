@@ -219,9 +219,24 @@ export const LEGAL: Record<string, LegalDoc> = {
     updated: UPDATED,
     intro: "To keep BounceBlock safe and lawful for everyone, you agree not to use it for the following.",
     sections: [
-      { heading: "Prohibited uses", bullets: ["Verifying data you have no right to process.", "Building lists for unlawful spam or harassment.", "Attempting to breach, overload or reverse-engineer the service.", "Reselling raw verification API capacity without authorization."] },
+      { heading: "Prohibited uses", bullets: ["Verifying data you have no right to process.", "Building lists for unlawful spam or harassment.", "Tracking, monitoring, locating, profiling or identifying any individual, or any other form of surveillance or stalking.", "Contacting people who have not consented or where you have no lawful basis to do so.", "Attempting to breach, overload or reverse-engineer the service.", "Reselling raw verification API capacity without authorization."] },
+      { heading: "Intended use", paras: ["BounceBlock is a contact-data verification and hygiene service for organisations to keep their own marketing, sales and CRM data accurate and deliverable. Its tools — including email finding, address analysis and phone validation — exist to confirm that contacts you are authorised to reach are real and reachable. They are not people-search, identity, background-check or surveillance tools and must not be used to track, monitor or identify individuals."] },
       { heading: "Data you upload", paras: ["You confirm you have a lawful basis to process the contacts you upload and that doing so does not violate applicable privacy or anti-spam laws."] },
       { heading: "Consequences and reporting", paras: ["Violations may result in immediate suspension or termination. Report abuse to security@bounceblock.io."] },
+    ],
+  },
+  ccpa: {
+    title: "CCPA / CPRA Notice",
+    summary: "How BounceBlock handles personal information for California residents under the CCPA, as amended by the CPRA.",
+    updated: UPDATED,
+    intro:
+      "This notice supplements our Privacy Policy for residents of California and explains your rights under the California Consumer Privacy Act (CCPA), as amended by the California Privacy Rights Act (CPRA).",
+    sections: [
+      { heading: "Information we collect", paras: ["When you use BounceBlock we process account information you provide and the contact data you upload for verification. We act as a service provider for the contact data you submit and process it only to perform verification on your behalf."] },
+      { heading: "We do not sell or share your data", paras: ["BounceBlock does not sell personal information, and does not share it for cross-context behavioral advertising, as those terms are defined under the CCPA/CPRA. Uploaded contact lists are used solely to perform the verification you request and are deleted within 24 hours."] },
+      { heading: "Your California rights", bullets: ["Know what personal information we collect and how it is used.", "Request access to and deletion of your personal information.", "Correct inaccurate personal information.", "Limit the use of sensitive personal information.", "Not receive discriminatory treatment for exercising these rights."] },
+      { heading: "How to exercise your rights", paras: ["Submit a request to privacy@bounceblock.io. We will verify your identity and respond within the timeframes required by law. You may use an authorized agent to submit a request on your behalf."] },
+      { heading: "Service-provider role", paras: ["For the contact data you upload, your organization is the business and BounceBlock is the service provider. We process that data only on your documented instructions and do not retain, use or disclose it for any other purpose."] },
     ],
   },
 };

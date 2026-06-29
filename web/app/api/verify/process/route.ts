@@ -7,6 +7,7 @@ import { rateLimit, clientIp } from "@/lib/rate-limit";
 import { createSupabaseAdminClient } from "@/lib/supabase/admin";
 import { getOrCreateUsage, incrementUsage } from "@/lib/usage";
 import { persistFullRun } from "@/lib/verification/persist";
+import { logEvent } from "@/lib/events";
 import type { PlanId } from "@/lib/plans";
 
 export const runtime = "nodejs";
@@ -54,6 +55,7 @@ export async function POST(req: NextRequest) {
       const toProcess = Math.min(rows.length, FULL_LIMIT);
 
       if (usage.used + toProcess > usage.quota) {
+        await logEvent("quota_exceeded", { userId: user.id, email: user.email, metadata: { used: usage.used, quota: usage.quota } });
         return NextResponse.json(
           { error: "quota_exceeded", used: usage.used, quota: usage.quota },
           { status: 402 }
@@ -72,6 +74,11 @@ export async function POST(req: NextRequest) {
           cleanCsv: result.cleanCsv,
         });
         await incrementUsage(db, usage.id, usage.used, result.stats.analyzed);
+        await logEvent("verify_full", {
+          userId: user.id,
+          email: user.email,
+          metadata: { rows: result.stats.analyzed, score: result.stats.qualityScore, verificationId },
+        });
         return NextResponse.json({
           mock: result.stats.mock,
           stats: result.stats,

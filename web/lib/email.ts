@@ -17,13 +17,29 @@ function getTransport(): Transporter {
   return transporter;
 }
 
-/** Send a transactional email. No-op (logs) until SMTP is configured. */
-export async function sendRawEmail(to: string, subject: string, html: string) {
+/**
+ * Send a transactional email. No-op (logs) until SMTP is configured.
+ * Mail is sent FROM no-reply@ with reply-to support@, so customer replies land
+ * in a monitored inbox instead of a dead no-reply box. Callers (e.g. the contact
+ * form) can override replyTo to point replies at the original sender.
+ */
+export async function sendRawEmail(
+  to: string,
+  subject: string,
+  html: string,
+  opts: { replyTo?: string } = {},
+) {
   if (!config.hasSmtp()) {
     console.log(`[email:skipped] to=${to} subject="${subject}" (SMTP not configured)`);
     return;
   }
-  await getTransport().sendMail({ from: `${SITE.name} <${SITE.email.hello}>`, to, subject, html });
+  await getTransport().sendMail({
+    from: `${SITE.name} <${SITE.email.noreply}>`,
+    replyTo: opts.replyTo ?? SITE.email.support,
+    to,
+    subject,
+    html,
+  });
 }
 
 /** Branded HTML wrapper for all emails. */

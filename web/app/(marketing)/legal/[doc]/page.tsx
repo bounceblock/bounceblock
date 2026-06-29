@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Container } from "@/components/ui/Container";
 import { LEGAL, type LegalSection } from "@/lib/legal";
+import { SITE } from "@/lib/constants";
 
 export function generateStaticParams() {
   return Object.keys(LEGAL).map((doc) => ({ doc }));
@@ -48,7 +49,7 @@ export default function LegalPage({ params }: { params: { doc: string } }) {
 
       <p className="mt-12 rounded-xl border border-hair bg-sunk/40 p-5 text-[13px] text-ink-3">
         This document is a template provided for convenience and is not legal advice. Have qualified counsel review it
-        before you rely on it. Questions: <a href="mailto:privacy@bounceblock.io" className="underline">privacy@bounceblock.io</a>.
+        before you rely on it. Questions: <a href={`mailto:${SITE.email.privacy}`} className="underline">{SITE.email.privacy}</a>.
       </p>
 
       <p className="mt-6 text-center text-[13.5px] text-ink-3">

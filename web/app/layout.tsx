@@ -4,7 +4,7 @@ import "./globals.css";
 import { SITE } from "@/lib/constants";
 import { Analytics } from "@/components/Analytics";
 import { JsonLd } from "@/components/JsonLd";
-import { organizationLd, websiteLd } from "@/lib/jsonld";
+import { organizationLd, websiteLd, softwareApplicationLd } from "@/lib/jsonld";
 
 const fraunces = Fraunces({
   subsets: ["latin"],
@@ -57,6 +57,7 @@ export default function RootLayout({
       <body>
         <JsonLd data={organizationLd()} />
         <JsonLd data={websiteLd()} />
+        <JsonLd data={softwareApplicationLd()} />
         {children}
         <Analytics />
       </body>

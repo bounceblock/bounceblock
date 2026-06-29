@@ -6,6 +6,7 @@ import { config } from "@/lib/config";
 import { hashKey } from "@/lib/api-keys";
 import { createSupabaseAdminClient } from "@/lib/supabase/admin";
 import { rateLimit, clientIp } from "@/lib/rate-limit";
+import { logEvent } from "@/lib/events";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -25,12 +26,14 @@ export async function POST(req: NextRequest) {
   const key = (req.headers.get("authorization") ?? "").replace(/^Bearer\s+/i, "").trim();
   if (!key) return NextResponse.json({ error: "missing_api_key" }, { status: 401 });
 
+  let apiUserId: string | null = null;
   if (config.hasSupabaseAdmin()) {
     const db = createSupabaseAdminClient();
-    const { data } = await db.from("api_keys").select("id, revoked_at").eq("key_hash", hashKey(key)).single();
+    const { data } = await db.from("api_keys").select("id, user_id, revoked_at").eq("key_hash", hashKey(key)).single();
     if (!data || data.revoked_at) {
       return NextResponse.json({ error: "invalid_api_key" }, { status: 401 });
     }
+    apiUserId = data.user_id ?? null;
     db.from("api_keys").update({ last_used_at: new Date().toISOString() }).eq("id", data.id);
   } else if (key !== "bb_test") {
     return NextResponse.json({ error: "invalid_api_key", hint: "Use 'bb_test' in demo mode." }, { status: 401 });
@@ -46,6 +49,10 @@ export async function POST(req: NextRequest) {
 
   const emailRes = email ? (emailMock ? mockEmail(email) : await new ZeroBounceVerifier().verifyEmail(email)) : null;
   const phoneRes = phone ? (phoneMock ? mockPhone(phone) : await new NumVerifyValidator().validatePhone(phone)) : null;
+
+  if (apiUserId) {
+    await logEvent("api_verify", { userId: apiUserId, metadata: { email: Boolean(email), phone: Boolean(phone) } });
+  }
 
   return NextResponse.json({
     email: emailRes

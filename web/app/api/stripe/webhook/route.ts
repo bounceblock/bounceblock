@@ -6,6 +6,7 @@ import { config } from "@/lib/config";
 import { createSupabaseAdminClient } from "@/lib/supabase/admin";
 import { planForPriceId } from "@/lib/plans";
 import { sendReceiptEmail } from "@/lib/email";
+import { logEvent } from "@/lib/events";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -97,13 +98,20 @@ async function syncSubscription(db: SupabaseClient, sub: Stripe.Subscription) {
   if (plan && (sub.status === "active" || sub.status === "trialing")) {
     await db.from("profiles").update({ plan }).eq("id", userId);
   }
+
+  if (sub.status === "active" || sub.status === "trialing") {
+    await logEvent("subscription_created", { userId, metadata: { plan: plan ?? "starter", status: sub.status } });
+  }
 }
 
 async function cancelSubscription(db: SupabaseClient, sub: Stripe.Subscription) {
   await db.from("subscriptions").update({ status: "canceled" }).eq("stripe_subscription_id", sub.id);
   const customer = typeof sub.customer === "string" ? sub.customer : null;
   const userId = sub.metadata?.user_id ?? (await resolveUserId(db, customer));
-  if (userId) await db.from("profiles").update({ plan: "free" }).eq("id", userId);
+  if (userId) {
+    await db.from("profiles").update({ plan: "free" }).eq("id", userId);
+    await logEvent("subscription_canceled", { userId, metadata: { subscription: sub.id } });
+  }
 }
 
 async function recordPayment(db: SupabaseClient, inv: Stripe.Invoice) {
@@ -117,6 +125,7 @@ async function recordPayment(db: SupabaseClient, inv: Stripe.Invoice) {
     currency: inv.currency,
     status: inv.status ?? "paid",
   });
+  await logEvent("payment", { userId: userId ?? null, metadata: { amount: inv.amount_paid, currency: inv.currency } });
 
   if (userId) {
     const { data: profile } = await db.from("profiles").select("email, plan").eq("id", userId).single();

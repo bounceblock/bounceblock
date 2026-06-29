@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { USE_CASES, getUseCase } from "@/lib/seo-data";
 import { buildUseCasePage } from "@/lib/seo-content";
 import { SeoLanding } from "@/components/marketing/SeoLanding";
+import { pageMeta } from "@/lib/seo-meta";
 
 export function generateStaticParams() {
   return USE_CASES.map((e) => ({ slug: e.slug }));
@@ -11,10 +12,11 @@ export function generateStaticParams() {
 export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
   const e = getUseCase(params.slug);
   if (!e) return {};
-  return {
+  return pageMeta({
     title: e.label,
     description: `${e.label} with BounceBlock — verify emails, validate phones and remove duplicates. One flat price, results in two minutes.`,
-  };
+    path: `/use-case/${e.slug}`,
+  });
 }
 
 export default function UseCasePage({ params }: { params: { slug: string } }) {
@@ -29,6 +31,11 @@ export default function UseCasePage({ params }: { params: { slug: string } }) {
       relatedBase="/use-case"
       relatedTitle="More use cases"
       crossLink={{ href: "/industries", label: "Browse industries →" }}
+      breadcrumb={[
+        { name: "Home", path: "/" },
+        { name: "Use cases", path: "/use-cases" },
+        { name: e.label, path: `/use-case/${e.slug}` },
+      ]}
     />
   );
 }

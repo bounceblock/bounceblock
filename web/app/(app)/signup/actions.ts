@@ -20,7 +20,7 @@ export async function signup(formData: FormData) {
     password,
     options: {
       data: { full_name: fullName, referred_by: ref || null },
-      emailRedirectTo: `${config.siteUrl()}/dashboard`,
+      emailRedirectTo: `${config.siteUrl()}/auth/callback?next=/welcome`,
     },
   });
   if (error) redirect("/signup?error=" + encodeURIComponent(error.message));
@@ -31,5 +31,6 @@ export async function signup(formData: FormData) {
     // non-blocking — never fail signup on email
   }
 
-  redirect("/dashboard");
+  // New accounts land on the onboarding step (skippable to the dashboard).
+  redirect("/welcome");
 }

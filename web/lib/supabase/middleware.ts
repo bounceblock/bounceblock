@@ -2,7 +2,7 @@ import { createServerClient, type CookieOptions } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 import { config } from "@/lib/config";
 
-const PROTECTED = ["/dashboard", "/history", "/billing", "/settings"];
+const PROTECTED = ["/dashboard", "/history", "/billing", "/settings", "/welcome"];
 
 /** Refresh the Supabase session on every request and guard protected routes. */
 export async function updateSession(request: NextRequest) {
@@ -49,6 +49,8 @@ export async function updateSession(request: NextRequest) {
     if (!user || !admins.includes((user.email ?? "").toLowerCase())) {
       const url = request.nextUrl.clone();
       url.pathname = "/login";
+      // Send admins back to where they were headed after they authenticate.
+      if (!user) url.searchParams.set("next", path);
       return NextResponse.redirect(url);
     }
   }

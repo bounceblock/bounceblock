@@ -6,7 +6,7 @@ import { login } from "./actions";
 
 export const metadata: Metadata = { title: "Log in" };
 
-export default function LoginPage({ searchParams }: { searchParams: { error?: string } }) {
+export default function LoginPage({ searchParams }: { searchParams: { error?: string; next?: string } }) {
   return (
     <AuthShell>
       <h1 className="font-serif text-3xl">Welcome back</h1>
@@ -19,6 +19,7 @@ export default function LoginPage({ searchParams }: { searchParams: { error?: st
       )}
 
       <form action={login} className="mt-7 grid gap-4">
+        {searchParams.next && <input type="hidden" name="next" value={searchParams.next} />}
         <Field label="Email" name="email" type="email" placeholder="you@company.com" autoComplete="email" />
         <Field label="Password" name="password" type="password" placeholder="••••••••" autoComplete="current-password" />
         <Button type="submit">Log in</Button>

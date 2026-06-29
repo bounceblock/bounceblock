@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Logo } from "@/components/brand/Logo";
 import { getUser } from "@/lib/auth";
+import { isAdminUser } from "@/lib/admin";
 import { logout } from "@/app/(app)/actions";
 import { cn } from "@/lib/utils";
 
@@ -18,6 +19,7 @@ const NAV: { key: NavKey; label: string; href: string; icon: React.ReactNode }[]
 export async function AppShell({ active, children }: { active: NavKey; children: React.ReactNode }) {
   const user = await getUser();
   const email = user?.email ?? "Demo mode";
+  const showAdmin = isAdminUser(user);
 
   return (
     <div className="flex min-h-screen bg-canvas">
@@ -42,6 +44,12 @@ export async function AppShell({ active, children }: { active: NavKey; children:
           ))}
         </nav>
         <div className="mt-auto border-t border-hair pt-3">
+          {showAdmin && (
+            <Link href="/admin" className="mb-1 flex items-center gap-3 rounded-lg px-3 py-2.5 text-[14px] font-medium text-ink-2 transition-colors hover:bg-sunk">
+              <PathIcon d="M12 3l8 4v5c0 4.4-3.1 7.9-8 9-4.9-1.1-8-4.6-8-9V7z" />
+              Admin
+            </Link>
+          )}
           <div className="truncate px-3 py-1 text-[12px] text-ink-3">{email}</div>
           <form action={logout}>
             <button className="w-full rounded-lg px-3 py-2 text-left text-[14px] text-ink-2 transition-colors hover:bg-sunk">

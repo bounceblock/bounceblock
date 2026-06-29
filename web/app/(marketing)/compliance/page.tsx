@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Container } from "@/components/ui/Container";
 import { PageHero } from "@/components/marketing/PageHero";
+import { SITE } from "@/lib/constants";
 
 export const metadata: Metadata = {
   title: "Compliance",
@@ -62,7 +63,8 @@ export default function CompliancePage() {
           ))}
         </div>
         <p className="mt-8 text-[14px] text-ink-3">
-          Need a DPA, security questionnaire or compliance documentation? Email security@bounceblock.io.
+          Need a DPA, security questionnaire or compliance documentation? Email{" "}
+          <a href={`mailto:${SITE.email.security}`} className="text-brand-deep underline">{SITE.email.security}</a>.
         </p>
       </Container>
     </>

@@ -9,15 +9,42 @@ export type SubscriptionStatus = "active" | "trialing" | "past_due" | "canceled"
 export type UploadStatus = "uploaded" | "preview_done" | "processing" | "completed" | "failed";
 export type VerificationKind = "preview" | "full";
 export type VerificationStatus = "pending" | "processing" | "completed" | "failed";
+export type AccountStatus = "active" | "suspended";
 
 export interface Profile {
   id: string;
   email: string;
   full_name: string | null;
   plan: PlanTier;
+  status: AccountStatus;
   stripe_customer_id: string | null;
+  referral_code: string | null;
+  referral_credit_cents: number;
+  last_seen_at: string | null;
   created_at: string;
   updated_at: string;
+}
+
+/** Append-only product activity stream (see migration 0004). */
+export interface Event {
+  id: string;
+  user_id: string | null;
+  email: string | null;
+  type: string;
+  metadata: Record<string, unknown>;
+  ip: string | null;
+  created_at: string;
+}
+
+/** Privileged admin action record (see migration 0004). */
+export interface AdminAuditLog {
+  id: string;
+  admin_email: string;
+  action: string;
+  target_user_id: string | null;
+  target_email: string | null;
+  detail: Record<string, unknown>;
+  created_at: string;
 }
 
 export interface Subscription {

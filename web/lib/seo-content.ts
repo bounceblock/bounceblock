@@ -1,4 +1,6 @@
 import type { SeoEntry, LocalEntry } from "./seo-data";
+import { getIndustryExtra } from "./industry-content";
+import { getUseCaseExtra } from "./usecase-content";
 
 export interface BuiltPage {
   eyebrow: string;
@@ -17,11 +19,14 @@ const SHARED_FAQ = (subject: string) => [
 
 export function buildIndustryPage(e: SeoEntry): BuiltPage {
   const lower = e.label.toLowerCase();
+  const x = getIndustryExtra(e.slug); // unique, industry-specific copy (intro/challenges/FAQ)
   return {
     eyebrow: `${e.label} lead verification`,
-    h1: `${e.label} lead lists: stop chasing dead contacts`,
-    intro: `Up to 40% of ${lower} lead lists contain bad emails and disconnected phones. BounceBlock verifies every email and phone — and removes duplicates — so your team only works real ${lower} leads.`,
-    pains: [
+    h1: `${e.label} lead verification`,
+    intro:
+      x?.intro ??
+      `Up to 40% of ${lower} lead lists contain bad emails and disconnected phones. BounceBlock verifies every email and phone — and removes duplicates — so your team only works real ${lower} leads.`,
+    pains: x?.challenges ?? [
       e.pain,
       "Disconnected phone numbers waste hours of dialing.",
       "Duplicate records inflate your CRM and skew your reporting.",
@@ -31,7 +36,9 @@ export function buildIndustryPage(e: SeoEntry): BuiltPage {
       { title: "Phone validation", desc: `Confirm every ${lower} contact's number is live, with line type and carrier — the feature email-only tools don't have.` },
       { title: "Flat pricing", desc: `${e.benefit} One flat monthly price your ${lower} team can actually budget for.` },
     ],
-    faq: [
+    // Unique per-industry FAQ replaces the identical shared FAQ that previously
+    // appeared on all 55 pages (the single biggest source of duplicate text).
+    faq: x?.faq ?? [
       { q: `How does BounceBlock help ${e.label} teams?`, a: `It verifies the emails and phone numbers in your ${lower} lists and removes duplicates, so your team spends time only on contacts that are real and reachable.` },
       ...SHARED_FAQ(lower),
     ],
@@ -65,11 +72,14 @@ export function buildLocalPage(e: LocalEntry): BuiltPage {
 
 export function buildUseCasePage(e: SeoEntry): BuiltPage {
   const lower = e.label.toLowerCase();
+  const x = getUseCaseExtra(e.slug); // unique, task-specific copy (intro/challenges/FAQ)
   return {
     eyebrow: e.label,
     h1: `${e.label} in two minutes`,
-    intro: `${e.pain} BounceBlock verifies emails and phones and removes duplicates — so you can ${lower} without risking your sender reputation.`,
-    pains: [
+    intro:
+      x?.intro ??
+      `${e.pain} BounceBlock verifies emails and phones and removes duplicates — so you can ${lower} without risking your sender reputation.`,
+    pains: x?.challenges ?? [
       e.pain,
       "Bad contacts drag down deliverability and waste your team's time.",
       "Manual cleanup in spreadsheets takes hours and misses duplicates.",
@@ -79,7 +89,8 @@ export function buildUseCasePage(e: SeoEntry): BuiltPage {
       { title: "Catch what others miss", desc: "Typos, catch-all domains, disposable addresses, dead numbers and silent duplicates." },
       { title: "Flat, simple pricing", desc: `${e.benefit} No per-credit math, no surprise overage bills.` },
     ],
-    faq: [
+    // Unique per-task FAQ replaces the identical shared FAQ across all use-case pages.
+    faq: x?.faq ?? [
       { q: `What's the fastest way to ${lower}?`, a: `Upload your CSV to BounceBlock — we auto-detect your columns, preview the first 100 rows free, and return a clean, verified file in minutes.` },
       ...SHARED_FAQ("uploaded"),
     ],

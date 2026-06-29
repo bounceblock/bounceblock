@@ -1,0 +1,7 @@
+# BounceBlock — security policy and contact (RFC 9116)
+# If you believe you've found a security issue, please email us.
+Contact: mailto:security@bounceblock.io
+Expires: 2027-06-28T00:00:00.000Z
+Preferred-Languages: en
+Canonical: https://bounceblock.io/.well-known/security.txt
+Policy: https://bounceblock.io/security

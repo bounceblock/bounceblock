@@ -1,0 +1,198 @@
+import type { BlogPost } from "@/lib/blog";
+
+/** Phase-1 blog expansion, set B — verification, phone, company/data, lead-gen. */
+export const POSTS_B: BlogPost[] = [
+  {
+    slug: "real-time-vs-bulk-verification",
+    title: "Real-time vs bulk email verification: which do you need?",
+    description: "When to verify at the point of capture versus cleaning a whole list at once — and why most teams use both.",
+    date: "2026-02-26",
+    readMins: 5,
+    category: "Email verification",
+    intro:
+      "Email verification comes in two shapes: real-time (one address at a time, as it's captured) and bulk (a whole list at once). Most teams need both. Here's how to think about it.",
+    sections: [
+      { heading: "Real-time verification", paras: ["Real-time verification runs via an API the moment someone submits a form or signs up. It blocks invalid and disposable addresses before they ever enter your database — the cleanest data is data you never let in."] },
+      { heading: "Bulk verification", paras: ["Bulk verification cleans a list you already have — an export, a purchased list, an aging CRM. You upload a CSV, verify every row, dedupe, and download a clean file before a campaign."] },
+      { heading: "Why most teams use both", bullets: ["Real-time keeps new data clean at the source.", "Bulk cleans the data you already accumulated.", "Together they keep the whole database deliverable."] },
+      { heading: "One engine, both modes", paras: ["BounceBlock runs the same verification engine for bulk uploads and the real-time API, so results are consistent whether you check one address or a million."] },
+    ],
+  },
+  {
+    slug: "how-accurate-is-email-verification",
+    title: "How accurate is email verification, really?",
+    description: "What email verification can and can't tell you for certain — and why catch-all and unknown results exist.",
+    date: "2026-02-19",
+    readMins: 5,
+    category: "Email verification",
+    intro:
+      "No verifier can promise 100% certainty on every address — and any that claims to should make you suspicious. Here's what verification gets right, where the limits are, and how to read the results honestly.",
+    sections: [
+      { heading: "What it nails", paras: ["Syntax errors, typos, non-existent domains and domains with no MX records are caught reliably — these are clearly invalid and will bounce. So are most disposable and role-based addresses."] },
+      { heading: "Where certainty ends", paras: ["Catch-all domains accept everything, so a specific mailbox can't be confirmed from outside. Some servers also greylist or time out, producing an unknown result. Honest verifiers report these as catch-all or unknown rather than guessing."] },
+      { heading: "How to read a quality score", paras: ["A per-list quality score blends all these signals so you can judge a whole list at a glance. A high score means most addresses are clearly valid; a lower one flags more risk to investigate before you send."] },
+      { heading: "Accuracy is also about honesty", paras: ["The most useful verifier is the one that tells you the truth about uncertainty — flagging catch-all and unknown clearly — rather than inflating a valid count to look better."] },
+    ],
+  },
+  {
+    slug: "avoid-spam-traps",
+    title: "Spam traps: what they are and how to avoid them",
+    description: "The addresses that exist only to catch careless senders — and the list practices that keep you clear of them.",
+    date: "2026-02-12",
+    readMins: 5,
+    category: "Email verification",
+    intro:
+      "Spam traps are addresses designed to catch senders with poor list hygiene. Hit one and you can land on a blocklist fast. You can't see them — but you can avoid them.",
+    sections: [
+      { heading: "Two kinds of traps", paras: ["Pristine traps are addresses that never opted in to anything, used to catch senders who scrape or buy lists. Recycled traps are once-real addresses that were abandoned and repurposed — catching senders who never clean their lists."] },
+      { heading: "Why they're so damaging", paras: ["Hitting traps tells mailbox providers and blocklist operators that you're mailing people who never engaged. The result can be an immediate reputation hit or a blocklist entry that filters all your mail."] },
+      { heading: "How to stay clear", bullets: ["Never buy or scrape lists.", "Verify before every send to drop invalid and risky addresses.", "Remove contacts who haven't engaged in a long time.", "Use double opt-in so only real people get on the list."] },
+      { heading: "Hygiene is the defense", paras: ["You can't detect traps directly, but consistent list hygiene — verify, prune, re-verify — keeps the odds of hitting one very low."] },
+    ],
+  },
+  {
+    slug: "reduce-fake-signups",
+    title: "How to reduce fake signups on your forms",
+    description: "Bots and throwaway addresses pollute your CRM at the form. Here's how to stop them before they become records.",
+    date: "2026-02-05",
+    readMins: 4,
+    category: "Email verification",
+    intro:
+      "Every signup form attracts fakes — bots, typos and disposable addresses. Left unchecked they bloat your CRM and wreck your metrics. Here's how to keep them out.",
+    sections: [
+      { heading: "Where fake signups come from", bullets: ["Bots submitting forms automatically.", "People using disposable emails to grab a lead magnet.", "Typos that create dead addresses.", "Fake details entered to bypass a gate."] },
+      { heading: "Verify at the point of capture", paras: ["The most effective fix is a form guard: verify the email (and phone) in real time as the form is submitted, and block or flag invalid, disposable and obviously fake entries before they ever become a record."] },
+      { heading: "Layer your defenses", paras: ["Combine real-time verification with basic bot protection and, where appropriate, double opt-in. Verification handles the dead and disposable addresses; the others catch automated abuse."] },
+      { heading: "Keep the CRM clean at the source", paras: ["Stopping bad data at the form is cheaper than cleaning it later and keeps every downstream metric — conversion, engagement, deliverability — honest."] },
+    ],
+  },
+  {
+    slug: "what-is-phone-validation",
+    title: "What is phone number validation and why it matters",
+    description: "How phone validation works, what it tells you, and why teams that call or text can't ignore it.",
+    date: "2026-01-29",
+    readMins: 6,
+    category: "Phone validation",
+    intro:
+      "If your team calls or texts, unverified numbers cost you as much wasted time as dead inboxes cost email senders. Phone validation is the phone-side equivalent of email verification. Here's how it works.",
+    sections: [
+      { heading: "What validation checks", bullets: ["Format — is the number valid in E.164 international format?", "Status — is it active or disconnected?", "Line type — mobile, landline or VoIP?", "Carrier and country."] },
+      { heading: "Why line type matters", paras: ["Line type changes how you reach someone. Mobiles can be called or texted; landlines can be called but not texted; VoIP numbers are often used for fraud or throwaway signups and behave unpredictably. Knowing the type routes outreach correctly."] },
+      { heading: "The cost of skipping it", paras: ["Dialing disconnected numbers burns rep time; texting dead or wrong-type numbers wastes SMS spend and can hurt your sender standing. Validating first means your team only spends minutes on reachable contacts."] },
+      { heading: "The blind spot in most tools", paras: ["Nearly every email verifier ignores phone numbers entirely. BounceBlock validates phones alongside email and company data in the same upload, across 30+ countries, at one flat price."] },
+      { heading: "When to validate", paras: ["Validate before any calling or SMS campaign, and re-check periodically — numbers get reassigned and ported over time, so a list that was clean last quarter quietly goes stale."] },
+    ],
+  },
+  {
+    slug: "hlr-lookup-explained",
+    title: "HLR lookup explained: check any number's status",
+    description: "What an HLR lookup is, what it reveals about a mobile number, and why it makes phone validation more accurate.",
+    date: "2026-01-22",
+    readMins: 4,
+    category: "Phone validation",
+    intro:
+      "An HLR lookup checks a mobile number against the carrier's own database to see whether it's live — without calling or texting it. Here's what it is and why it matters.",
+    sections: [
+      { heading: "What HLR means", paras: ["The Home Location Register is the database mobile carriers use to track their subscribers. An HLR lookup queries it to learn whether a number is currently active, which network it's on, and whether it's been ported to another carrier."] },
+      { heading: "What it tells you", bullets: ["Whether a mobile number is active or disconnected.", "The current carrier, even after porting.", "The country and network.", "All without placing a call or sending an SMS."] },
+      { heading: "Why it improves accuracy", paras: ["For mobile numbers, HLR data is more reliable than format checks alone — it reflects the number's real status at the carrier, so you avoid dialing or texting numbers that look valid but are actually dead."] },
+      { heading: "Where it fits", paras: ["HLR lookups make mobile validation sharper. Combined with line-type detection and formatting checks, they give you a complete picture of a phone list before you call or text."] },
+    ],
+  },
+  {
+    slug: "detect-phone-line-type",
+    title: "Mobile vs landline vs VoIP: how to detect line type",
+    description: "Why line type changes your outreach strategy and how to detect it before you call or text.",
+    date: "2026-01-15",
+    readMins: 4,
+    category: "Phone validation",
+    intro:
+      "Not all phone numbers are equal. A mobile, a landline and a VoIP number each demand a different approach — and texting the wrong type wastes money. Here's how line type works.",
+    sections: [
+      { heading: "The three line types", bullets: ["Mobile — can be called and texted; ideal for SMS.", "Landline — can be called, not texted.", "VoIP — internet-based; often used for fraud or throwaway signups."] },
+      { heading: "Why it changes your strategy", paras: ["Routing matters: send SMS only to mobiles, route landlines to your dialer, and flag VoIP numbers for extra scrutiny. Getting this right cuts failed texts and wasted dials."] },
+      { heading: "VoIP as a risk signal", paras: ["A surprising share of fraudulent or throwaway signups use VoIP numbers. Detecting them lets you add friction or verification before they reach a campaign — much like flagging disposable emails."] },
+      { heading: "Detecting it at scale", paras: ["BounceBlock returns line type for every number in your upload, so you can segment by type and reach each contact the right way."] },
+    ],
+  },
+  {
+    slug: "clean-phone-list-before-sms",
+    title: "How to clean a phone list before an SMS campaign",
+    description: "A pre-send checklist for phone lists so your SMS campaign reaches real mobiles and doesn't waste spend.",
+    date: "2026-01-08",
+    readMins: 4,
+    category: "Phone validation",
+    intro:
+      "SMS is expensive per message and unforgiving of bad data. Cleaning your phone list before a campaign means every text has a chance to land. Here's the checklist.",
+    sections: [
+      { heading: "Validate format and status", paras: ["Normalise numbers to E.164 international format and drop the ones that are malformed or disconnected. A wrongly formatted number simply fails to send."] },
+      { heading: "Filter by line type", paras: ["SMS only works on mobile numbers. Filter out landlines (which can't receive texts) and scrutinise VoIP numbers, which are more likely to be fake or throwaway."] },
+      { heading: "Dedupe", paras: ["Remove duplicate numbers so you don't text the same person twice — annoying for them and wasteful for you."] },
+      { heading: "Do it in one pass", paras: ["BounceBlock validates phone numbers, returns line type and carrier, and dedupes — alongside email and company checks — in a single upload, so your whole list is campaign-ready in minutes."] },
+    ],
+  },
+  {
+    slug: "what-is-data-enrichment",
+    title: "What is data enrichment and how to use it",
+    description: "How enrichment adds company, industry and location context to your contacts — and why to verify before you enrich.",
+    date: "2026-02-23",
+    readMins: 5,
+    category: "Company & data",
+    intro:
+      "Data enrichment turns a bare email or phone number into a record you can segment, score and personalise around. Used well — after verification — it sharpens every downstream play. Here's how.",
+    sections: [
+      { heading: "What enrichment adds", paras: ["Enrichment fills in the context around a contact: the company they work for, its industry and size, location, and other firmographic detail. That's what lets you group, route and personalise instead of treating every lead the same."] },
+      { heading: "Verify first, enrich second", paras: ["There's no point enriching a record that's invalid — you'd be paying to decorate data that will never convert. Verify emails and phones first, then enrich only the contacts that are real."] },
+      { heading: "What good enrichment powers", bullets: ["Lead scoring based on fit.", "Territory and owner routing.", "Personalised outreach by industry or size.", "Cleaner segmentation and reporting."] },
+      { heading: "Keep it accurate", paras: ["Enriched data is only useful if it's right, which is why enrichment pairs naturally with verification and name-to-domain matching — so the company you attach is actually the company behind the contact."] },
+    ],
+  },
+  {
+    slug: "company-name-to-domain-matching",
+    title: "Company name-to-domain matching: a practical guide",
+    description: "Why the domain is the best key for a B2B record, and how name-to-domain matching resolves messy form input.",
+    date: "2026-02-16",
+    readMins: 4,
+    category: "Company & data",
+    intro:
+      "In B2B, the company domain is the most reliable key for a record — but forms capture company names, not domains. Name-to-domain matching bridges the gap. Here's how it works and why it matters.",
+    sections: [
+      { heading: "Why the domain is the key", paras: ["Company names are entered inconsistently — abbreviations, legal suffixes, typos, subsidiaries. The domain is stable and unique, which makes it the best key for deduplication, enrichment and routing."] },
+      { heading: "What matching has to handle", bullets: ["Abbreviations and nicknames (IBM vs International Business Machines).", "Legal suffixes (Inc., Ltd., GmbH).", "Subsidiaries and parent companies.", "Look-alike names across different companies."] },
+      { heading: "Verification keeps it honest", paras: ["Matching combines fuzzy logic with verification so you don't attach data to the wrong company. Getting the domain right is what makes the enrichment that follows trustworthy."] },
+      { heading: "Where it fits", paras: ["Name-to-domain matching is a foundational step in BounceBlock's company verification — resolving the business behind each contact before adding firmographic context."] },
+    ],
+  },
+  {
+    slug: "stop-fake-b2b-signups",
+    title: "How to stop fake B2B signups at the form",
+    description: "Free-email and fake-company signups dilute your B2B funnel. Here's how to verify and qualify at the form.",
+    date: "2026-02-09",
+    readMins: 4,
+    category: "Company & data",
+    intro:
+      "B2B funnels get polluted by personal-email signups, fake company names and bots. Verifying and qualifying at the form keeps your pipeline real. Here's how.",
+    sections: [
+      { heading: "The B2B signup problem", paras: ["Free-email signups (gmail, outlook) and fake or mistyped company names slip into your funnel, inflating lead counts and wasting sales time on contacts that aren't real businesses."] },
+      { heading: "Verify the email and the company", bullets: ["Verify the email is valid and not disposable.", "Resolve the company name to a real domain.", "Flag free-email signups for routing or extra qualification.", "Block obvious bot and fake-detail patterns."] },
+      { heading: "Real-time at the form", paras: ["A form guard does this the instant someone submits — so bad B2B leads never reach your CRM and your sales team only follows up on real companies."] },
+      { heading: "Cleaner pipeline, honest metrics", paras: ["Qualifying at the form means your lead counts, conversion rates and pipeline reflect real businesses, not noise."] },
+    ],
+  },
+  {
+    slug: "cost-of-dirty-email-list",
+    title: "The real cost of a dirty email list",
+    description: "Dirty lists cost far more than wasted sends — in deliverability, reputation, team time and decisions made on bad data.",
+    date: "2026-02-02",
+    readMins: 5,
+    category: "Lead gen",
+    intro:
+      "A dirty list looks free to keep using — until you add up what it actually costs. The bill shows up in deliverability, reputation, wasted effort and bad decisions. Here's the real total.",
+    sections: [
+      { heading: "Deliverability and reputation", paras: ["Bounces and spam-trap hits from unverified addresses damage your sender reputation, which means even your good mail starts landing in spam. That cost compounds across every future campaign, not just the one with the bad data."] },
+      { heading: "Wasted team time and spend", bullets: ["Reps dialing disconnected numbers.", "SMS spend on dead or wrong-type phones.", "Marketers chasing contacts that don't exist.", "Enrichment budget spent on invalid records."] },
+      { heading: "Decisions on bad data", paras: ["Inflated list sizes and skewed engagement rates lead to wrong conclusions — about which campaigns work, which segments convert, and where to invest. Clean data is the basis for honest analytics."] },
+      { heading: "The cheap fix", paras: ["Verifying before every send is a fraction of these costs. BounceBlock cleans email and phone in one upload at a flat price, so regular hygiene is affordable instead of something you avoid — preview your first 100 contacts free."] },
+    ],
+  },
+];

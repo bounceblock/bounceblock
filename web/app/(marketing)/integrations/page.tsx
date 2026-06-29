@@ -1,17 +1,16 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Container } from "@/components/ui/Container";
 import { PageHero } from "@/components/marketing/PageHero";
 import { Button } from "@/components/ui/Button";
+import { INTEGRATIONS } from "@/lib/integrations";
+import { pageMeta } from "@/lib/seo-meta";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMeta({
   title: "Integrations",
-  description: "Connect BounceBlock to your CRM and outreach stack — and use the API.",
-};
-
-const INTEGRATIONS: [string, string][] = [
-  ["HubSpot", "Soon"], ["Salesforce", "Soon"], ["Mailchimp", "Soon"], ["Zapier", "Soon"],
-  ["Pipedrive", "Soon"], ["Google Sheets", "Soon"], ["Outreach", "Soon"], ["Apollo", "Soon"],
-];
+  description: "Clean the data in HubSpot, Salesforce, Mailchimp, Shopify and more — verify emails, phones and company data, then re-import.",
+  path: "/integrations",
+});
 
 export default function IntegrationsPage() {
   return (
@@ -19,18 +18,18 @@ export default function IntegrationsPage() {
       <PageHero
         eyebrow="Integrations"
         title="Fits the stack you already use."
-        sub="CSV in, clean CSV out today — with native CRM and outreach integrations on the way, plus a developer API on Business."
+        sub="Clean the data in your CRM, email platform and store — CSV in, verified CSV out today, with native syncs and a developer API on the way."
       />
       <Container className="py-16">
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-          {INTEGRATIONS.map(([name, status]) => (
-            <div key={name} className="flex flex-col items-center justify-center gap-2 rounded-2xl border border-hair bg-raised p-7 text-center shadow-s1">
-              <span className="grid h-11 w-11 place-items-center rounded-xl bg-sunk font-serif text-lg font-semibold text-ink-2">
-                {name[0]}
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+          {INTEGRATIONS.map((i) => (
+            <Link key={i.slug} href={`/integrations/${i.slug}`} className="group flex flex-col items-center justify-center gap-2 rounded-2xl border border-hair bg-raised p-7 text-center shadow-s1 transition-all hover:-translate-y-0.5 hover:border-brand/40 hover:shadow-s2">
+              <span className="grid h-11 w-11 place-items-center rounded-xl bg-sunk font-serif text-lg font-semibold text-ink-2 group-hover:bg-brand-wash group-hover:text-brand-deep">
+                {i.name[0]}
               </span>
-              <span className="text-[14.5px] font-semibold">{name}</span>
-              <span className="rounded-full bg-unknown/15 px-2.5 py-0.5 text-[11px] font-semibold text-[#A9761B]">{status}</span>
-            </div>
+              <span className="text-[14.5px] font-semibold group-hover:text-brand-deep">{i.name}</span>
+              <span className="text-[11.5px] text-ink-3">{i.category}</span>
+            </Link>
           ))}
         </div>
 

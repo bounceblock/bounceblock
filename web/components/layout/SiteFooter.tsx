@@ -9,7 +9,7 @@ export function SiteFooter() {
   return (
     <footer className="mt-24 border-t border-hair py-14">
       <Container>
-        <div className="grid grid-cols-2 gap-8 md:grid-cols-[1.5fr_1fr_1fr_1fr]">
+        <div className="grid grid-cols-2 gap-8 md:grid-cols-[1.5fr_repeat(4,1fr)]">
           <div>
             <Logo />
             <p className="mt-3.5 max-w-[250px] text-sm text-ink-2">

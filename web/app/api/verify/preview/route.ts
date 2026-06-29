@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { runPreview, type PreviewMapping } from "@/lib/verification/preview";
 import { rateLimit, clientIp } from "@/lib/rate-limit";
+import { getUser } from "@/lib/auth";
+import { logEvent } from "@/lib/events";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -37,6 +39,8 @@ export async function POST(req: NextRequest) {
 
   try {
     const result = await runPreview(rows, mapping);
+    const user = await getUser();
+    await logEvent("verify_preview", { userId: user?.id ?? null, email: user?.email ?? null, metadata: { rows: rows.length } });
     return NextResponse.json(result);
   } catch (err) {
     return NextResponse.json(

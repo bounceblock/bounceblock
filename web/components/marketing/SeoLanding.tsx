@@ -5,7 +5,7 @@ import { SectionHead } from "@/components/marketing/SectionHead";
 import { HowItWorks } from "@/components/marketing/HowItWorks";
 import { FinalCta } from "@/components/marketing/FinalCta";
 import { JsonLd } from "@/components/JsonLd";
-import { faqLd } from "@/lib/jsonld";
+import { faqLd, breadcrumbLd } from "@/lib/jsonld";
 import type { BuiltPage } from "@/lib/seo-content";
 
 export function SeoLanding({
@@ -14,16 +14,19 @@ export function SeoLanding({
   relatedBase,
   relatedTitle,
   crossLink,
+  breadcrumb,
 }: {
   built: BuiltPage;
   related: Array<{ slug: string; label: string }>;
   relatedBase: string;
   relatedTitle: string;
   crossLink: { href: string; label: string };
+  breadcrumb?: { name: string; path: string }[];
 }) {
   return (
     <>
       <JsonLd data={faqLd(built.faq)} />
+      {breadcrumb && <JsonLd data={breadcrumbLd(breadcrumb)} />}
       {/* hero */}
       <section className="relative overflow-hidden border-b border-hair">
         <div className="pointer-events-none absolute inset-x-0 -top-32 h-[420px] bg-[radial-gradient(40%_60%_at_28%_28%,rgba(46,169,78,.13),transparent_70%),radial-gradient(36%_50%_at_76%_22%,rgba(27,127,212,.11),transparent_70%)] blur-2xl" />

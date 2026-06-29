@@ -8,11 +8,12 @@ export const SITE = {
   description:
     "BounceBlock verifies every email and validates every phone in one upload, then removes duplicates — so your team only chases leads that are real. One flat price.",
   email: {
-    hello: "hello@bounceblock.io",
-    support: "support@bounceblock.io",
-    billing: "billing@bounceblock.io",
-    privacy: "privacy@bounceblock.io",
-    security: "security@bounceblock.io",
+    hello: "hello@bounceblock.io",       // general / marketing
+    support: "support@bounceblock.io",   // customer support + reply-to for transactional
+    billing: "billing@bounceblock.io",   // Stripe + invoices
+    privacy: "privacy@bounceblock.io",   // GDPR / privacy requests
+    security: "security@bounceblock.io", // abuse / security reports
+    noreply: "no-reply@bounceblock.io",  // From address for outbound transactional mail
   },
 } as const;
 
@@ -32,19 +33,22 @@ export const NAV: NavItem[] = [
   {
     label: "Product",
     children: [
-      { label: "Verify tool", href: "/verify", desc: "Clean a list in two minutes" },
-      { label: "How it works", href: "/#how", desc: "Upload → verify → download" },
-      { label: "Features", href: "/#features", desc: "Email + phone, dedupe, scoring" },
-      { label: "Security", href: "/security", desc: "Encryption, GDPR, 24h deletion" },
+      { label: "Email verification", href: "/product/email-verification", desc: "Catch invalids before they bounce" },
+      { label: "Phone validation", href: "/product/phone-verification", desc: "Line type, carrier, status" },
+      { label: "Company data", href: "/product/company-verification", desc: "Verify & enrich the business" },
+      { label: "API & Form Guard", href: "/product/email-verification-api", desc: "Verify in real time" },
+      { label: "Features", href: "/features", desc: "Every check, explained" },
+      { label: "All products →", href: "/product", desc: "Everything BounceBlock does" },
     ],
   },
   {
     label: "Solutions",
     children: [
-      { label: "Real estate", href: "/industry/real-estate", desc: "Clean agent & broker lists" },
-      { label: "Insurance", href: "/industry/insurance", desc: "Verify policyholder leads" },
-      { label: "Recruiting", href: "/industry/recruiting", desc: "Validate candidate contacts" },
-      { label: "All industries →", href: "/industries", desc: "Browse 40+ industries" },
+      { label: "For marketers", href: "/for/marketers", desc: "Protect deliverability" },
+      { label: "For sales & RevOps", href: "/for/sales", desc: "Reach real, reachable people" },
+      { label: "For developers", href: "/for/developers", desc: "Real-time verification API" },
+      { label: "For agencies", href: "/for/agencies", desc: "Clean any client list, flat-priced" },
+      { label: "By industry →", href: "/industries", desc: "Browse 40+ industries" },
     ],
   },
   { label: "Pricing", href: "/pricing" },
@@ -52,9 +56,12 @@ export const NAV: NavItem[] = [
     label: "Resources",
     children: [
       { label: "Blog", href: "/blog", desc: "Deliverability guides" },
-      { label: "Use cases", href: "/use-cases", desc: "Every way to clean a list" },
-      { label: "Compare alternatives", href: "/alternatives", desc: "BounceBlock vs the rest" },
-      { label: "Case studies", href: "/case-studies", desc: "Real bounce-rate turnarounds" },
+      { label: "Free tools", href: "/tools", desc: "Verify, validate, check records" },
+      { label: "Guides & templates", href: "/resources", desc: "Checklists & playbooks" },
+      { label: "Research", href: "/research", desc: "Original data studies" },
+      { label: "Reviews", href: "/reviews", desc: "Verification tools, rated" },
+      { label: "Compare tools", href: "/compare", desc: "Side-by-side matrix" },
+      { label: "Glossary", href: "/glossary", desc: "Every term, explained" },
     ],
   },
 ];
@@ -62,28 +69,39 @@ export const NAV: NavItem[] = [
 /** Footer link groups. */
 export const FOOTER = {
   Product: [
-    { label: "Verify tool", href: "/verify" },
+    { label: "Email verification", href: "/product/email-verification" },
+    { label: "Phone validation", href: "/product/phone-verification" },
+    { label: "Company data", href: "/product/company-verification" },
+    { label: "Features", href: "/features" },
     { label: "Pricing", href: "/pricing" },
     { label: "Integrations", href: "/integrations" },
-    { label: "API", href: "/api-docs" },
+  ],
+  Resources: [
+    { label: "Blog", href: "/blog" },
+    { label: "Free tools", href: "/tools" },
+    { label: "Guides & templates", href: "/resources" },
+    { label: "Research", href: "/research" },
+    { label: "Reviews", href: "/reviews" },
+    { label: "Compare tools", href: "/compare" },
+    { label: "Glossary", href: "/glossary" },
+    { label: "Help center", href: "/help" },
   ],
   Company: [
     { label: "About", href: "/about" },
-    { label: "Blog", href: "/blog" },
+    { label: "Careers", href: "/careers" },
     { label: "Contact", href: "/contact" },
+    { label: "Book a demo", href: "/demo" },
     { label: "Case studies", href: "/case-studies" },
-    { label: "Alternatives", href: "/alternatives" },
-    { label: "Locations", href: "/locations" },
+    { label: "Authors", href: "/authors" },
     { label: "Trust center", href: "/trust" },
     { label: "Status", href: "/status" },
   ],
   Legal: [
     { label: "Privacy", href: "/legal/privacy" },
     { label: "Terms", href: "/legal/terms" },
-    { label: "Cookies", href: "/legal/cookies" },
-    { label: "Refund", href: "/legal/refund" },
     { label: "DPA", href: "/legal/dpa" },
-    { label: "Sub-processors", href: "/legal/subprocessors" },
     { label: "GDPR", href: "/legal/gdpr" },
+    { label: "CCPA", href: "/legal/ccpa" },
+    { label: "Sub-processors", href: "/legal/subprocessors" },
   ],
 } as const;
