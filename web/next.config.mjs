@@ -34,22 +34,6 @@ const nextConfig = {
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
   },
-  webpack: (config, { nextRuntime }) => {
-    // The Edge middleware imports @supabase/ssr → supabase-js, which statically
-    // references node-only fallbacks — `ws` (in realtime-js) and
-    // `@supabase/node-fetch`. They're only used when a global WebSocket/fetch is
-    // missing, which never happens on the Edge runtime, but Vercel's Edge bundler
-    // rejects them ("referencing unsupported modules"). Exclude them from the
-    // Edge bundle only; the Node server build keeps node-fetch for API routes.
-    if (nextRuntime === "edge") {
-      config.resolve.alias = {
-        ...config.resolve.alias,
-        ws: false,
-        "@supabase/node-fetch": false,
-      };
-    }
-    return config;
-  },
 };
 
 export default nextConfig;
