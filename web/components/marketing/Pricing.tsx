@@ -48,14 +48,16 @@ export function Pricing({ headingAs = "h2" }: { headingAs?: "h1" | "h2" } = {}) 
         </div>
 
         <div className="grid items-stretch gap-5 md:grid-cols-2 lg:grid-cols-4">
-          {PLANS.map((plan) => {
+          {PLANS.map((plan, i) => {
             const price = annual ? plan.priceAnnualPerMonth : plan.priceMonthly;
             return (
               <div
                 key={plan.id}
+                data-reveal
+                style={{ ["--reveal-delay" as string]: `${i * 70}ms` }}
                 className={cn(
-                  "relative flex flex-col rounded-[22px] border bg-raised p-7 shadow-s1",
-                  plan.popular ? "border-brand shadow-s3" : "border-hair"
+                  "lift relative flex flex-col rounded-[22px] border bg-raised p-7 shadow-s1",
+                  plan.popular ? "border-brand shadow-s3 hover:shadow-s3" : "border-hair hover:border-brand/40 hover:shadow-s2"
                 )}
               >
                 {plan.popular && (

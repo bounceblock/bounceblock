@@ -1,6 +1,7 @@
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { CookieConsent } from "@/components/marketing/CookieConsent";
+import { ScrollReveal } from "@/components/marketing/ScrollReveal";
 
 export default function MarketingLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -10,6 +11,7 @@ export default function MarketingLayout({ children }: { children: React.ReactNod
       <main id="main">{children}</main>
       <SiteFooter />
       <CookieConsent />
+      <ScrollReveal />
     </>
   );
 }

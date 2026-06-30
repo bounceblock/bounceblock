@@ -18,8 +18,13 @@ export function HowItWorks() {
         />
         <div className="relative grid gap-6 md:grid-cols-3">
           <div className="absolute left-[16%] right-[16%] top-[27px] hidden h-0.5 bg-[repeating-linear-gradient(90deg,var(--hair)_0_7px,transparent_7px_14px)] md:block" />
-          {STEPS.map(([n, t, d]) => (
-            <div key={n} className="relative text-center">
+          {STEPS.map(([n, t, d], i) => (
+            <div
+              key={n}
+              data-reveal
+              style={{ ["--reveal-delay" as string]: `${i * 110}ms` }}
+              className="relative text-center"
+            >
               <div className="mx-auto grid h-[54px] w-[54px] place-items-center rounded-2xl border border-hair bg-raised font-serif text-[22px] font-semibold text-brand-deep shadow-s2">
                 {n}
               </div>

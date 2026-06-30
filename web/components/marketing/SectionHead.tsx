@@ -12,7 +12,7 @@ export function SectionHead({
 }) {
   const headingCls = "mt-3 font-serif text-[clamp(30px,4vw,44px)]";
   return (
-    <div className="mx-auto mb-12 max-w-[660px] text-center">
+    <div className="mx-auto mb-12 max-w-[660px] text-center" data-reveal>
       <div className="mx-auto mb-4 h-0.5 w-8 rounded bg-brand" />
       <span className="eyebrow">{eyebrow}</span>
       {as === "h1" ? (

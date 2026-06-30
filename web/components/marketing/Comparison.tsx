@@ -22,7 +22,7 @@ export function Comparison() {
     <section id="compare" className="py-20">
       <Container>
         <SectionHead eyebrow="Why BounceBlock" title="One tool that does what three can't" />
-        <div className="overflow-hidden rounded-[28px] border border-hair bg-raised shadow-s2">
+        <div className="overflow-hidden rounded-[28px] border border-hair bg-raised shadow-s2" data-reveal="scale">
           <div className="overflow-x-auto">
             <table className="w-full min-w-[560px] border-collapse">
               <thead>

@@ -43,11 +43,11 @@ export function Hero() {
     verdict?.tone === "invalid" ? "text-invalid" : verdict?.tone === "unknown" ? "text-unknown" : "text-brand";
 
   return (
-    <section className="relative overflow-hidden">
+    <section className="relative overflow-hidden bg-dotgrid">
       {/* aurora */}
       <div className="pointer-events-none absolute inset-x-0 -top-40 h-[620px] bg-[radial-gradient(40%_50%_at_28%_28%,rgba(46,169,78,.16),transparent_70%),radial-gradient(36%_46%_at_76%_22%,rgba(27,127,212,.15),transparent_70%),radial-gradient(46%_52%_at_60%_78%,rgba(240,222,188,.30),transparent_70%)] blur-2xl" />
       <Container className="relative grid items-center gap-12 py-20 md:grid-cols-[1.05fr_.95fr]">
-        <div>
+        <div data-reveal>
           <span className="inline-flex items-center gap-2 rounded-full border border-hair bg-raised px-3.5 py-1.5 text-[12.8px] font-medium text-ink-2 shadow-s1">
             <span className="h-1.5 w-1.5 rounded-full bg-brand" />
             Email &amp; phone — verified together
@@ -74,7 +74,7 @@ export function Hero() {
         </div>
 
         {/* interactive verify widget */}
-        <div className="rounded-[26px] border border-hair bg-raised p-2.5 shadow-s3">
+        <div data-reveal="right" style={{ ["--reveal-delay" as string]: "120ms" }} className="rounded-[26px] border border-hair bg-raised p-2.5 shadow-s3">
           <div className="flex items-center justify-between px-3.5 py-2.5">
             <span className="flex items-center gap-2 text-[12.5px] font-semibold text-ink-2">
               <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-brand" /> Live verification

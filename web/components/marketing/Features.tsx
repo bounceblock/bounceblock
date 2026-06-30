@@ -26,7 +26,7 @@ export function Features() {
         />
         <div className="grid auto-rows-[190px] grid-cols-1 gap-4 md:grid-cols-6">
           {/* big: email */}
-          <div className="rounded-[22px] border border-hair bg-raised p-7 shadow-s2 md:col-span-4 md:row-span-2">
+          <div data-reveal className="lift rounded-[22px] border border-hair bg-raised p-7 shadow-s2 hover:border-brand/40 hover:shadow-s3 md:col-span-4 md:row-span-2">
             <Icon d="M3 6.5h18v11H3zM4 8l8 5 8-5" />
             <h3 className="mt-4 font-serif text-xl">Email verification</h3>
             <p className="mt-1.5 text-[14px] text-ink-2">
@@ -46,7 +46,7 @@ export function Features() {
             </div>
           </div>
           {/* tall: phone */}
-          <div className="relative rounded-[22px] border border-hair bg-raised p-7 shadow-s2 md:col-span-2 md:row-span-2">
+          <div data-reveal style={{ ["--reveal-delay" as string]: "80ms" }} className="lift relative rounded-[22px] border border-hair bg-raised p-7 shadow-s2 hover:border-brand/40 hover:shadow-s3 md:col-span-2 md:row-span-2">
             <Icon d="M6 3h4l2 5-3 2a12 12 0 005 5l2-3 5 2v4a2 2 0 01-2 2A16 16 0 014 6a2 2 0 012-3z" />
             <h3 className="mt-4 font-serif text-xl">Phone validation</h3>
             <p className="mt-1.5 text-[14px] text-ink-2">
@@ -60,19 +60,19 @@ export function Features() {
             </div>
           </div>
           {/* dedupe */}
-          <div className="rounded-[22px] border border-hair bg-raised p-7 shadow-s2 md:col-span-2">
+          <div data-reveal style={{ ["--reveal-delay" as string]: "120ms" }} className="lift rounded-[22px] border border-hair bg-raised p-7 shadow-s2 hover:border-brand/40 hover:shadow-s3 md:col-span-2">
             <Icon d="M4 4h11v11H4zM9 9h11v11H9z" />
             <h3 className="mt-4 font-serif text-[19px]">Duplicate removal</h3>
             <p className="mt-1 text-[13.5px] text-ink-2">Hash-based matching finds dupes even when formatting differs.</p>
           </div>
           {/* score */}
-          <div className="rounded-[22px] border border-hair bg-raised p-7 shadow-s2 md:col-span-2">
+          <div data-reveal style={{ ["--reveal-delay" as string]: "120ms" }} className="lift rounded-[22px] border border-hair bg-raised p-7 shadow-s2 hover:border-brand/40 hover:shadow-s3 md:col-span-2">
             <Icon d="M4 19V5m0 14h16M8 16V9m4 7V6m4 10v-4" />
             <h3 className="mt-4 font-serif text-[19px]">Quality score</h3>
             <p className="mt-1 text-[13.5px] text-ink-2">One number, 0–100, tells you how healthy a list is.</p>
           </div>
           {/* security */}
-          <div className="rounded-[22px] border border-hair bg-raised p-7 shadow-s2 md:col-span-2">
+          <div data-reveal style={{ ["--reveal-delay" as string]: "120ms" }} className="lift rounded-[22px] border border-hair bg-raised p-7 shadow-s2 hover:border-brand/40 hover:shadow-s3 md:col-span-2">
             <Icon d="M5 11h14v9H5zM8 11V8a4 4 0 018 0v3" />
             <h3 className="mt-4 font-serif text-[19px]">Bank-grade security</h3>
             <p className="mt-1 text-[13.5px] text-ink-2">AES-256, auto-deleted in 24h. Your data is never sold.</p>

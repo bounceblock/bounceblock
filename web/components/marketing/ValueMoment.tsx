@@ -18,7 +18,7 @@ export function ValueMoment() {
   return (
     <section className="py-20">
       <Container className="grid items-center gap-12 md:grid-cols-[1.04fr_.96fr]">
-        <div className="rounded-[26px] border border-hair bg-raised p-7 shadow-s3">
+        <div data-reveal="left" className="rounded-[26px] border border-hair bg-raised p-7 shadow-s3">
           <div className="flex items-center gap-6 border-b border-hair pb-6">
             <div className="relative h-[118px] w-[118px] shrink-0">
               <svg width="118" height="118" viewBox="0 0 118 118">
@@ -69,7 +69,7 @@ export function ValueMoment() {
           </div>
         </div>
 
-        <div>
+        <div data-reveal="right" style={{ ["--reveal-delay" as string]: "100ms" }}>
           <span className="eyebrow">The value moment</span>
           <h2 className="mt-3 font-serif text-[clamp(28px,3.7vw,42px)]">
             See exactly what&rsquo;s wrong<br />before you pay a cent.

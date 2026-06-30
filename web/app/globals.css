@@ -114,3 +114,73 @@ a {
 .skip-link:focus {
   top: 12px;
 }
+
+/* ─────────────────────────────────────────────
+   Scroll-reveal — JS-gated so the SSR/no-JS HTML
+   stays fully visible (SEO-safe), and forced visible
+   under reduced-motion. Elements opt in with
+   `data-reveal` and an optional `--reveal-delay`.
+   ───────────────────────────────────────────── */
+html.reveal-ready [data-reveal] {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+html.reveal-ready [data-reveal="left"] { transform: translateX(-26px); }
+html.reveal-ready [data-reveal="right"] { transform: translateX(26px); }
+html.reveal-ready [data-reveal="scale"] { transform: scale(0.95); }
+html.reveal-ready [data-reveal="fade"] { transform: none; }
+html.reveal-ready [data-reveal].is-in {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  html.reveal-ready [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+/* ─────────────────────────────────────────────
+   Premium texture + motion utilities
+   ───────────────────────────────────────────── */
+
+/* faint dot grid — adds depth behind hero bands */
+.bg-dotgrid {
+  background-image: radial-gradient(rgba(20, 35, 61, 0.045) 1px, transparent 1px);
+  background-size: 22px 22px;
+  background-position: -1px -1px;
+}
+
+/* brand gradient text for inline emphasis */
+.gradient-text {
+  background: linear-gradient(100deg, var(--brand-deep), var(--blue));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* gentle hover lift for cards/links */
+.lift {
+  transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease),
+    border-color 0.25s var(--ease);
+}
+.lift:hover {
+  transform: translateY(-3px);
+}
+
+/* slow float for decorative hero visuals */
+@keyframes floaty {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-9px); }
+}
+.animate-floaty { animation: floaty 7s ease-in-out infinite; }
+
+/* sheen sweep used on primary CTAs */
+@keyframes sheen {
+  0% { transform: translateX(-120%) skewX(-18deg); }
+  60%, 100% { transform: translateX(260%) skewX(-18deg); }
+}

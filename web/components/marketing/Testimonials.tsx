@@ -33,7 +33,7 @@ export function Testimonials() {
       <Container>
         <SectionHead eyebrow="Loved by sales teams" title="Real teams. Real bounce rates, fixed." />
         <div className="grid items-start gap-4 md:grid-cols-3">
-          <figure className="flex flex-col rounded-[22px] border border-hair bg-raised p-7 shadow-s2 md:row-span-2">
+          <figure data-reveal className="lift flex flex-col rounded-[22px] border border-hair bg-raised p-7 shadow-s2 hover:shadow-s3 md:row-span-2">
             <Stars />
             <blockquote className="mt-3.5 font-serif text-[25px] leading-[1.42] text-ink">“{FEATURED.quote}”</blockquote>
             <figcaption className="mt-auto flex items-center gap-3 pt-5">
@@ -44,8 +44,13 @@ export function Testimonials() {
               </span>
             </figcaption>
           </figure>
-          {QUOTES.map((q) => (
-            <figure key={q.name} className="rounded-[22px] border border-hair bg-raised p-6 shadow-s2">
+          {QUOTES.map((q, i) => (
+            <figure
+              key={q.name}
+              data-reveal
+              style={{ ["--reveal-delay" as string]: `${(i + 1) * 70}ms` }}
+              className="lift rounded-[22px] border border-hair bg-raised p-6 shadow-s2 hover:shadow-s3"
+            >
               <Stars />
               <blockquote className="mt-3 font-serif text-[17px] leading-[1.42] text-ink">“{q.quote}”</blockquote>
               <figcaption className="mt-5 flex items-center gap-3">
